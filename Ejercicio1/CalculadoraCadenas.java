@@ -1,3 +1,4 @@
+import java.util.EmptyStackException;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -22,12 +23,16 @@ public static void main(String[] args) {
         p.push(s[i]);
       }
       else  {
+    	try {
     	voltearPila(p);
         t1=p.pop();
         t2=p.pop();
         operator=s[i].charAt(0);
         r=operacion(t1,t2,operator);
         p.push(r);
+    	}catch (EmptyStackException e) {
+    		System.out.println("Pila vacía, formato incorrecto de cadena.");
+    	}
       }
     }
     resul=p.pop();
@@ -78,3 +83,4 @@ public static void main(String[] args) {
 	  }
 	 }
 }
+	
