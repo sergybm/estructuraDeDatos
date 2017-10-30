@@ -4,7 +4,7 @@ class Cliente {
 
 		public Cliente(double tiempoLlegada) {
 			this.productos = (int) (Math.random() * (10 - 1) + 1);
-			tiempoLlegada = tiempoLlegada;
+			this.tiempoLlegada = tiempoLlegada ;
 		}
 
 		public int getProductos() {
@@ -25,7 +25,7 @@ class Cliente {
 
 		@Override
 		public String toString() {
-			return "Cliente [productos=" + productos + ", tiempoLlegada=" + tiempoLlegada + "]";
+			return " [productos=" + productos + ", tiempoLlegada=" + tiempoLlegada + "]";
 		}
 
 	}
