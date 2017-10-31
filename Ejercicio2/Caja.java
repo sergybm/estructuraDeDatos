@@ -1,14 +1,21 @@
-class Caja {
-	private char ID;
+public class Caja implements Comparable<Caja>{
+	private int ID;
 	private int tiempoTrabajado; /*Cada posicion es el tiempo en pasar todos los productos de un cliente */
+	private boolean prioridad; // La utilizamos para saber que caja tiene prioridad para el cliente.
 
-
-	public Caja(int i, int tiempoTrabajado) {
+	public Caja(int i) {
 		int ID = i;
-		this.tiempoTrabajado = tiempoTrabajado;
+	}
+	
+	public boolean getPrioridad() {
+		return prioridad;
+	}
+	
+	public void setPrioridad(boolean prioridadcaja) {
+		prioridad = prioridadcaja;
 	}
 
-	public char getID() {
+	public int getID() {
 		return ID;
 	}
 
@@ -27,6 +34,24 @@ class Caja {
 	public void setTiempoTrabajo(int sumadorTiempo) { 
 		tiempoTrabajado += sumadorTiempo;
 	}
+	
+	/*/ @Override
+	public int compareTo(Caja c1) {
+		int r=0;
+		if (c1.getCola().size() < c2.getCola().size()) {
+			return -1;
+		}
+		if (c1.getCola().size() > c2.getCola().size() ) {
+			return 1;
+		}
+		return 0;
+	} 	
+	} /*/
+	
+
+
+
+
 
 
 }
