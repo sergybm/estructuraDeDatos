@@ -1,56 +1,115 @@
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
+// import java.util.Comparator;
 
 public class Ejercicio2 {
 	
+	public static PriorityQueue<Caja> CrearCajas(){
+		PriorityQueue<Caja> colacajas=new PriorityQueue<Caja>(); // /// Cola para meter las cajas
 	
+		for (int i=0; i<10;i++) {
+			colacajas.add(new Caja(i)); // Añadimos 10 cajas a nuestra cola de cajas
+		
+		}
+		return colacajas;
+		}
+	public static void MeterClientes() {
+		PriorityQueue<Caja> colacajas=CrearCajas();
+		Deque<Cliente> colaclientes = CrearClientes();    
+		
+		for (int i = 0; i < colaclientes.size();i++) {
+			Cliente cli = colaclientes.poll();
+			Caja caja =colacajas.poll();
+			try {
+				if (cli instanceof ClienteViejo) {
+					caja.getCola().addFirst(cli);
+						colacajas.add(caja);
+				}else {
+					caja.getCola().add(cli);
+					colacajas.add(caja);				
+			}
+		}catch(Exception ex) {
+			System.out.println("Error en la creación.");
+		}
+		
+		}
+	       
+	     
+	        
+	}
+	
+	public static Deque<Cliente> CrearClientes(){
+		Deque<Cliente> colaclientes = new LinkedBlockingDeque<Cliente>();
+		int tiempoTranscurrido = 0;
+		for(int i=0; i<100; i++){ // La cola de los clientes iniciales, los 100 clientes.
+			colaclientes.add(new Cliente(tiempoTranscurrido)); // Metemos los clientes en la cola de clientes
+	        tiempoTranscurrido=tiempoTranscurrido+30; // Los clientes entran cada 30 segundos.        
+		}
+		return colaclientes;
+	}
 	public static void main(String args[]) {
 		
 		int tiempoTranscurrido = 0; // Este será el tiempo que transcurre	.
-		PriorityQueue<Caja> colacajas=new PriorityQueue<Caja>(); // La cola que se genera en las cajas.
 		int sumadorTiempo = 1;
-		Queue<Cliente> colaclientes = new LinkedBlockingQueue<Cliente>(); // La cola de los clientes.
-		Cliente cliente[] = new Cliente[100]; // Vector con todos los clientes.
-		Caja cajas[] = new Caja[10]; // Vector con todos los clientes.
 		
-		for (int i=0; i<10;i++) {
-			colacajas.add(new Caja(i)); // Creamos nuestras 10 colas para nuestras cajas.
-		}
+		
 		
 		
 		System.out.println("Por orden de llegada:\n"); // Imprime los clientes con sus productos y el tiempo en el que llegan.
-		for(int i=0; i<100; i++){
-			cliente[i] = new Cliente(tiempoTranscurrido); // Creamos el cliente y lo metemos en el array.
-			colaclientes.add(cliente[i]); // Metemos cada cliente en la cola de los clientes.
-	           tiempoTranscurrido=tiempoTranscurrido+30; // Los clientes entran cada 30 segundos.
-	            System.out.println("Cliente " + i +": " +cliente[i].toString());
-	           
-		}       
-        System.out.println("\n\nPor orden de salida:\n");        
-			pasandoPorCaja(colaclientes, colacajas, sumadorTiempo, sumadorTiempo); // Cliente pasa por caja y sale el tiempo.
-		} 
+		
+		
+		 System.out.println(CrearClientes().toString()); 
+		 CrearCajas();
+		
+		 
+        System.out.println("Por orden de salida:\n");  
+        MeterClientes();
+        	// pasandoPorCaja(colaclientes, colacajas, sumadorTiempo, sumadorTiempo); // Cliente pasa por caja y sale el tiempo
+        }
+        
+		
 
+	
 	public static void pasandoPorCaja(Queue<Cliente> colaclientes,PriorityQueue<Caja> colacajas,int sumadorTiempo, int tiempoTranscurrido) {
 		int tiempoAtendiendo = 0, tiempoProducto = 0;
 
 		while (!colaclientes.isEmpty()) {	
-			Cliente clienteEnCaja;
+			Caja c;
+			
+		/*/	Cliente clienteEnCaja;
 			clienteEnCaja = colaclientes.poll();
 			int eficiencia = 0;
-			for (int i = clienteEnCaja.getProductos(); i > 0; i--) {
-
 			
-
+			for (int i = clienteEnCaja.getProductos(); i > 0; i--) {
 				while (tiempoProducto <= eficiencia) {
 					tiempoProducto += sumadorTiempo;
 				}
 				tiempoAtendiendo += tiempoProducto;
 				tiempoProducto = 0;
-			}
+			} /*/
 			System.out.println("El tiempo transcurrido con el cliente ha sido de:" + tiempoAtendiendo);
 			tiempoAtendiendo = 0;
 
 		}
 	}
+
+	
+	/*/	static class colas implements Comparator<Caja>{ // Para comparar las cajas
+
+	@Override
+	public int compare(Caja uno, Caja dos) {
+		if (uno.getCola().size() < dos.getCola().size()) {
+			return -1;
+		}
+		if (uno.getCola().size() > dos.getCola().size() ) {
+			return 1;
+		}
+		return 0;
+	}
+	
+} /*/
+	
+	
 }
 	

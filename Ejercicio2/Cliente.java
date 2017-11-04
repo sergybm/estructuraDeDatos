@@ -1,3 +1,4 @@
+
 class Cliente {
 		int productos;
 		double tiempoLlegada;
@@ -22,6 +23,8 @@ class Cliente {
 		public void setTiempoLlegada(double tiempoLlegada) {
 			this.tiempoLlegada = tiempoLlegada;
 		}
+		
+
 
 		@Override
 		public String toString() {
