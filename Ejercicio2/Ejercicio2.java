@@ -5,63 +5,68 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Ejercicio2 {
 	
-	public static PriorityQueue<Caja> CrearCajas(){
+	public static PriorityQueue<Caja> CrearCajas(){ /*/ Crea la lista de cajas y mete las 10 cajas /*/
 		PriorityQueue<Caja> colacajas=new PriorityQueue<Caja>(); // /// Cola para meter las cajas
 	
 		for (int i=0; i<10;i++) {
-			colacajas.add(new Caja(i)); // Añadimos 10 cajas a nuestra cola de cajas
-		
+			colacajas.add(new Caja(i)); // Creamos las 10 cajas y la añadimos
 		}
 		return colacajas;
 		}
-	public static void MeterClientes() {
-		PriorityQueue<Caja> colacajas=CrearCajas();
-		Deque<Cliente> colaclientes = CrearClientes();    
-		
-		for (int i = 0; i < colaclientes.size();i++) {
-			Cliente cli = colaclientes.poll();
-			Caja caja =colacajas.poll();
-			try {
-				if (cli instanceof ClienteViejo) {
-					caja.getCola().addFirst(cli);
-						colacajas.add(caja);
-				}else {
-					caja.getCola().add(cli);
-					colacajas.add(caja);				
-			}
-		}catch(Exception ex) {
-			System.out.println("Error en la creación.");
-		}
-		
-		}
-	       
-	     
-	        
-	}
 	
-	public static Deque<Cliente> CrearClientes(){
+
+	public static Deque<Cliente> CrearClientes(){ 	/*/ Crea los clientes y los mete en una cola doble  /*/
 		Deque<Cliente> colaclientes = new LinkedBlockingDeque<Cliente>();
-		int tiempoTranscurrido = 0;
+		int tiempoLlegada = 0;
 		for(int i=0; i<100; i++){ // La cola de los clientes iniciales, los 100 clientes.
-			colaclientes.add(new Cliente(tiempoTranscurrido)); // Metemos los clientes en la cola de clientes
-	        tiempoTranscurrido=tiempoTranscurrido+30; // Los clientes entran cada 30 segundos.        
+			colaclientes.add(new Cliente(tiempoLlegada)); // Metemos los clientes en la cola de clientes
+	        tiempoLlegada=tiempoLlegada+30; //El tiempo de llegada del proximo cliente será en 30 segundos.      
 		}
 		return colaclientes;
 	}
+	
+	
+	
+	public static void MeterClientes() {
+		PriorityQueue<Caja> colacajas=CrearCajas(); /// Metemos en la cola colacajas las 10 cajas creadas;
+		Deque<Cliente> colaclientes = CrearClientes();    
+		
+		int tiempoTranscurrido = 0; // Este será el tiempo que transcurre	, cada 30 segundos entra un nuevo cliente
+	
+		for (int i = 0; i < colaclientes.size();i++) {
+			
+			Cliente cli = colaclientes.poll(); // Saco cliente de la cola
+			Caja caja =colacajas.peek(); // Miro cual es la caja en la peek, que es en teoría, la caja con la cola mas pequeña y donde debe ir el cliente que queremos meter. 
+			caja=colacajas.poll();
+			
+			try {
+				if (cli instanceof ClienteViejo) {
+					caja.getCola().addFirst(cli); // Meto el cliente viejo en la caja
+						tiempoTranscurrido=tiempoTranscurrido+30; // Al meter un cliente añadimos al tiempo transcurrido 30 segundos
+				}else {
+					tiempoTranscurrido=+30; // Al meter un cliente añadimos al tiempo transcurrido 30 segundos.
+					caja.getCola().add(cli);	// Meto el cliente normal en la caja.
+			}
+				
+				colacajas.add(caja); // Actualizamos la coja de cajas con la nueva información
+				
+		}catch(Exception ex) {
+			System.out.println("Error en la creación.");
+		}
+			
+		}
+
+	}
+	
+
+	
+	
+	
 	public static void main(String args[]) {
-		
-		int tiempoTranscurrido = 0; // Este será el tiempo que transcurre	.
-		int sumadorTiempo = 1;
-		
-		
-		
 		
 		System.out.println("Por orden de llegada:\n"); // Imprime los clientes con sus productos y el tiempo en el que llegan.
 		
-		
 		 System.out.println(CrearClientes().toString()); 
-		 CrearCajas();
-		
 		 
         System.out.println("Por orden de salida:\n");  
         MeterClientes();
