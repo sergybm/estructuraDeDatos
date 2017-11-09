@@ -1,0 +1,41 @@
+/*********************************************************************
+*
+* Author/s name: Lucía Alfonso García
+* 				 Sergio Barrios Martínez
+* 				 Raul Ruiz del Valle Álvarez
+* Release/Creation date: 12/11/2017
+* 
+***********************************************************************
+*/
+public class Tirada {
+	public String toString() {
+		return "Bola=" + bola + ", Jugador=" + jugador + ", Importe=" + importe + " € ";
+	}
+	int bola;
+	boolean jugador;
+	int importe;
+	public Tirada(int bola, boolean jugador, int importe) { //Creamos el constructor
+		this.bola = bola;
+		this.jugador = jugador;
+		this.importe = importe;	
+	}
+//Los siguientes métodos son los get y set de cada variable de esta clase
+	public int getBola() {
+		return bola;
+	}
+	public void setBola(int bola) {
+		this.bola = bola;
+	}
+	public boolean isJugador() {
+		return jugador;
+	}
+	public void setJugador(boolean jugador) {
+		this.jugador = jugador;
+	}
+	public int getImporte() {
+		return importe;
+	}
+	public void setImporte(int importe) {
+		this.importe = importe;
+	}
+}
