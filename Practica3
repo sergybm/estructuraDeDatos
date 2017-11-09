@@ -1,0 +1,84 @@
+/*********************************************************************
+*
+* Author/s name: Lucía Alfonso García
+* 				 Sergio Barrios Martínez
+* 				 Raul Ruiz del Valle Álvarez
+* Release/Creation date: 12/11/2017
+* 
+***********************************************************************
+*/
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+public class casino {
+	final static int totalDeTiradas = 10; // Cambiar para modificar el nº de tiradas
+	private static List<Tirada> lista_ganadores = new LinkedList<Tirada>();
+	private static List<Tirada> lista_perdedor = new LinkedList<Tirada>();
+	private static int ganancias = 0;
+	private static int bola;
+
+	public static void main(String[] args) {
+		List<Tirada> tiradas = new LinkedList<Tirada>();
+		for (int i = 0; i < totalDeTiradas; i++) { // Generar aleatoriamente los números de las bolas
+			bola = (int) (Math.random() * (36 - 0 + 1) + 0);
+			boolean ganador = ganador(); // Comprueba si hay ganador o no
+			tiradas.add(new Tirada(bola, ganador, importe(ganador))); // Añades los datos a la lista 'tiradas'
+		}
+		lista(tiradas);
+		imprimir_listas(lista_ganadores, lista_perdedor);
+	}
+	public static boolean ganador() { // Genera aleatoriamente si hay ganador
+		if (bola == 0) { // Si la bola es 0 siempre gana la banca
+			return true;
+		} else {
+			return Math.random() < 0.5; // En el caso de que sea <0.5, hay ganador, si es mayor no
+		}
+	}
+	public static int importe(boolean ganador) { // Asignas un importe al ganador entre 10 y 1000
+		if (ganador == true) {
+			return (int) (Math.random() * (1000 - 10 + 1) + 10);
+		} else {
+			return 0;
+		}
+	}
+	public static void lista(List<Tirada> tiradas) { // Imprimes la lista con los datos de todas las tiradas
+		Iterator<Tirada> iter = tiradas.iterator();
+		Tirada aux;
+		System.out.println("\n \t*Lista de tiradas totales* \n");
+		while (iter.hasNext()) {
+			aux = iter.next();
+			if (aux.isJugador()) { // Analiza si hay ganador y añade un * en ese caso
+				System.out.println(aux.toString() + "*");
+				lista_ganadores.add(aux); // En este caso, lo añade a la 'lista_ganadores'
+			} else {
+				System.out.println(aux.toString());
+				lista_perdedor.add(aux);// En este caso lo añade en la 'lista_perdedor'
+			}
+		}
+	}
+	public static void imprimir_listas(List<Tirada> lista_ganadores, List<Tirada> lista_perdedor) {
+		Tirada aux;
+		Iterator<Tirada> iter = lista_ganadores.iterator();
+		System.out.println("\n \t *LISTA DE GANADORES* \n"); // Imprime la lista de ganadores
+		while (iter.hasNext()) {
+			aux = iter.next();
+			System.out.println(aux);
+			if (aux.getBola() != 0) {
+				ganancias = ganancias + aux.getImporte(); // Sumamos las ganancias de todos los ganadores
+			}
+		}
+		System.out.println();
+		Iterator<Tirada> iter1 = lista_perdedor.iterator();
+		System.out.println("\n \t*LISTA DE LOS NO PREMIADOS* \n"); // Saca la lista de los no premiados
+		while (iter1.hasNext()) {
+			System.out.println(iter1.next());
+		}
+		if (ganancias == 0) {
+			System.out.println("No ha habido ganancias"); // Imprime si no hay ganancias
+		} else {
+			System.out.println("\n Las ganancias totales son: " + ganancias); // Imprime el valor de las ganancias
+		}
+	}
+}
