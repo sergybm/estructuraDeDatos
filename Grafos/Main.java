@@ -18,7 +18,7 @@ public class Main {
 	        BufferedReader b = new BufferedReader(f);
 	        while((linea = b.readLine())!=null) {
 	        	cadena = linea.split(",");
-	        	Aeropuerto aeropuertos= new Aeropuerto(Integer.parseInt(cadena[0]),cadena[3],cadena[4], Double.parseDouble(cadena[6]),Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
+	        	Aeropuerto aeropuertos= new Aeropuerto(Integer.parseInt(cadena[0]),cadena[3],cadena[4],cadena[5], Double.parseDouble(cadena[6]),Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
 	            System.out.println(aeropuertos.toString());
 	        }
 	        b.close();
