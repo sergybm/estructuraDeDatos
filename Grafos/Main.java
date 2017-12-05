@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import graphsDSESIUCLM.*;
 
 public class Main {
 
@@ -28,19 +29,21 @@ public class Main {
 						|| cadena[4].equals(origen)) {
 
 					Aeropuerto ap1 = new Aeropuerto(Integer.parseInt(quitarComillas(cadena[0])),
-							quitarComillas(cadena[3]), quitarComillas(cadena[4]), quitarComillas(cadena[5]),
+							quitarComillas(cadena[3]), quitarComillas(cadena[4]),
 							Double.parseDouble(cadena[6]), Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
 					viaje[0] = ap1;
+					
 
 				} else if (cadena[4].equals(destino) || cadena[4].equals(destino) || cadena[4].equals(destino)
 						|| cadena[4].equals(destino)) {
 
 					Aeropuerto ap2 = new Aeropuerto(Integer.parseInt(quitarComillas(cadena[0])),
-							quitarComillas(cadena[3]), quitarComillas(cadena[4]), quitarComillas(cadena[5]),
+							quitarComillas(cadena[3]), quitarComillas(cadena[4]),
 							Double.parseDouble(cadena[6]), Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
 					viaje[1] = ap2;
+				
 				}
-
+				
 			}
 		}
 		b.close();
@@ -64,12 +67,15 @@ public class Main {
 					System.out.println(aeropuerto[i].toString());
 				}
 			}
-
+			
 			//System.out.println(rutas.toString());
 
 		}
 		b.close();
 	}
+	
+		
+	
 
 	public static String quitarComillas(String token) {
 		return token.substring(1, token.length() - 1);

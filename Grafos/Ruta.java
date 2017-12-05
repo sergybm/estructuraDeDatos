@@ -1,7 +1,7 @@
 public class Ruta {
 	String Aerolinea; 
 	String IDAerolinea; // Los tengo que hacer Strings por que tienen /N 
-	String codeOrigen; // el code puede ser o ATA o ICAO.
+	String codeOrigen; // el code puede ser o IATA o ICAO.
 	String IDorigen; // Los tengo que hacer Strings por que tienen /N 
 	String codeDestino;
 	String IDdestino;// Los tengo que hacer Strings por que tienen /N 
@@ -17,7 +17,7 @@ public class Ruta {
 
 	}
 	/* 
-	 * Aerolinea=0,IDAerolinea=1,IATAorigen=2,IDorigen=3,ICAOorigen=4,IDdestino=5
+	 * Aerolinea=0,IDAerolinea,IATAorigen=2,IDorigen=3,iATAdestino=4,IDdestino=5
 	 * El numero de variables del fichero tiene 9 datos pero solo nos quedamos con esos.	
 	 */
 
