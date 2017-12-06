@@ -39,6 +39,7 @@ public class Main {
 				//System.out.println("\n Elemento: "+ ++cont);
 				System.out.print(traversal.remove().getElement().toString() + " ");
 		}
+		mostrarGrafo(gr);
 	}
 
 	public static Queue<ElementoDecorado> DFSIter(Graph g, Vertex<ElementoDecorado> s) {
@@ -120,6 +121,26 @@ public class Main {
 		}
 		b.close();
 
+	}
+	
+	public static void mostrarGrafo(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr){
+		System.out.println("\nGrafo:");
+		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+    	
+		while(itr.hasNext()){//Dos While anidados para mostrar cada aeropuerto del grafo  y sus adyacentes.
+			Vertex<ElementoDecorado<Aeropuerto>> u = itr.next(); 
+			Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
+			System.out.print("Conexión: " +u.getElement().getElement().IATA +"  -----------> ");
+				while(itr1.hasNext()){ //Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
+					Vertex<ElementoDecorado<Aeropuerto>> u2 = itr1.next(); 
+					if(gr.areAdjacent(u, u2)){
+						
+						System.out.print(u2.getElement().getElement().IATA+", ");
+					}
+				}
+				System.out.println();
+			}
+		System.out.println();
 	}
 
 	public static String quitarComillas(String token) {
