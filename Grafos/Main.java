@@ -2,80 +2,75 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
-import graphsDSESIUCLM.*;
+
+import graphsDSESIUCLM.Edge;
+import graphsDSESIUCLM.Graph;
+import graphsDSESIUCLM.TreeMapGraph;
+import graphsDSESIUCLM.Vertex;
 
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		CargarRutas("routes.txt");
 
-	}
+		Graph gr = new TreeMapGraph<>();
+		Queue<DecoratedElementTraversal> traversal;
 
-	public static Aeropuerto[] CargarAeropuertos(String archivo, String origen, String destino)
-			throws FileNotFoundException, IOException {
+		Vertex<DecoratedElementTraversal> startVertex;
+		String startVID;
+
+		createGraph(gr);
+
+		startVID = "1";
+		startVertex = gr.getVertex(startVID);
+		if (startVertex == null) {
+			System.out.println("The vertex does not exist");
+		}
+	public static void createGraph(Graph gr) throws IOException {
+
+		String aeropuertos = "airports.txt";
+		String rutas = "routes.txt";
 		String linea;
 		String[] cadena;
-		Aeropuerto[] viaje = new Aeropuerto[1];
 
-		FileReader f = new FileReader(archivo);
+		FileReader f = new FileReader(aeropuertos);
 		BufferedReader b = new BufferedReader(f);
 		while ((linea = b.readLine()) != null) {
 			cadena = linea.split(",");
-			if (cadena[3].equals("\"Spain\"") || cadena[3].equals("\"Italy\"") || cadena[3].equals("\"Germany\"")
-					|| cadena[3].equals("\"France\"")) {
-				if (cadena[4].equals(origen) || cadena[4].equals(origen) || cadena[4].equals(origen)
-						|| cadena[4].equals(origen)) {
+			if ((cadena[3].equals("\"Spain\"") || cadena[3].equals("\"Italy\"") || cadena[3].equals("\"Germany\"")
+					|| cadena[3].equals("\"France\"")) && quitarComillas(cadena[4]).length() == 3) {
 
-					Aeropuerto ap1 = new Aeropuerto(Integer.parseInt(quitarComillas(cadena[0])),
-							quitarComillas(cadena[3]), quitarComillas(cadena[4]),
-							Double.parseDouble(cadena[6]), Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
-					viaje[0] = ap1;
-					
-
-				} else if (cadena[4].equals(destino) || cadena[4].equals(destino) || cadena[4].equals(destino)
-						|| cadena[4].equals(destino)) {
-
-					Aeropuerto ap2 = new Aeropuerto(Integer.parseInt(quitarComillas(cadena[0])),
-							quitarComillas(cadena[3]), quitarComillas(cadena[4]),
-							Double.parseDouble(cadena[6]), Double.parseDouble(cadena[7]), Integer.parseInt(cadena[8]));
-					viaje[1] = ap2;
-				
-				}
-				
+				Aeropuerto ap1 = new Aeropuerto(quitarComillas(cadena[0]), quitarComillas(cadena[3]),
+						quitarComillas(cadena[4]), cadena[6], cadena[7], cadena[8]);
+				//DecoratedElementTraversal e1 = new DecoratedElementTraversal(cadena[0], ap1); Cadena[0] es la llave con la que podemos identificarlo
+				System.out.println(ap1.toString());
 			}
 		}
 		b.close();
 
-		return viaje;
+		f = new FileReader(rutas);
+		b = new BufferedReader(f);
+		while ((linea = b.readLine()) != null) {
+			cadena = linea.split(",");
+
+			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
+	
+
+			// System.out.println(rutas.toString());
+
+		}
+		b.close();
+
+
 	}
 
 	public static void CargarRutas(String archivo) throws FileNotFoundException, IOException {
-		String linea;
-		String[] cadena;
-		Aeropuerto aeropuerto[];
 
-		FileReader f = new FileReader(archivo);
-		BufferedReader b = new BufferedReader(f);
-		while ((linea = b.readLine()) != null) {
-			cadena = linea.split(",");
-			Ruta rutas = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
-			aeropuerto = CargarAeropuertos("airports.txt", rutas.getCodeOrigen(), rutas.getCodeDestino());
-			for (int i = 0; i < aeropuerto.length; i++) {
-				if (aeropuerto[i] != null) {
-					System.out.println(aeropuerto[i].toString());
-				}
-			}
-			
-			//System.out.println(rutas.toString());
-
-		}
-		b.close();
 	}
-	
-		
-	
 
 	public static String quitarComillas(String token) {
 		return token.substring(1, token.length() - 1);
