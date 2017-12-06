@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
-import ayudaGrafos.DecoratedElementTraversal;
 import graphsDSESIUCLM.Edge;
 import graphsDSESIUCLM.Graph;
 import graphsDSESIUCLM.TreeMapGraph;
@@ -18,11 +18,12 @@ import graphsDSESIUCLM.Vertex;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+		int cont=0;
 
 		Graph gr = new TreeMapGraph<>();
-		Queue<DecoratedElementTraversal> traversal;
+		Queue<ElementoDecorado> traversal;
 
-		Vertex<DecoratedElementTraversal> startVertex;
+		Vertex<ElementoDecorado> startVertex;
 		String startVID;
 
 		createGraph(gr);
@@ -35,20 +36,21 @@ public class Main {
 			traversal = DFSIter(gr, startVertex);
 			System.out.println("Nonrecursive DFS traversal with the node " + startVID + " as starting vertex\n");
 			while (!traversal.isEmpty())
+				//System.out.println("\n Elemento: "+ ++cont);
 				System.out.print(traversal.remove().getElement().toString() + " ");
 		}
 	}
 
-	public static Queue<DecoratedElementTraversal> DFSIter(Graph g, Vertex<DecoratedElementTraversal> s) {
+	public static Queue<ElementoDecorado> DFSIter(Graph g, Vertex<ElementoDecorado> s) {
 
-		Stack<Vertex<DecoratedElementTraversal>> p;
-		Queue<DecoratedElementTraversal> traversal;
-		p = new Stack<Vertex<DecoratedElementTraversal>>();
-		traversal = new LinkedList<DecoratedElementTraversal>();
+		Stack<Vertex<ElementoDecorado>> p;
+		Queue<ElementoDecorado> traversal;
+		p = new Stack<Vertex<ElementoDecorado>>();
+		traversal = new LinkedList<ElementoDecorado>();
 
-		Vertex<DecoratedElementTraversal> u, v;
+		Vertex<ElementoDecorado> u, v;
 		Edge e;
-		Iterator<Edge<DecoratedElementTraversal>> it;
+		Iterator<Edge<ElementoDecorado>> it;
 
 		p.push(s);
 		while (!p.isEmpty()) {
@@ -84,7 +86,7 @@ public class Main {
 
 				Aeropuerto ap1 = new Aeropuerto(quitarComillas(cadena[0]), quitarComillas(cadena[3]),
 						quitarComillas(cadena[4]), cadena[6], cadena[7], cadena[8]);
-
+				/* Añadimos los aeropuertos a una lista para luego manejarlos */
 				list.add(ap1);
 
 			}
@@ -93,28 +95,28 @@ public class Main {
 
 		f = new FileReader(rutas);
 		b = new BufferedReader(f);
-		DecoratedElementTraversal<Aeropuerto> e1 = null;
-		DecoratedElementTraversal<Aeropuerto> e2 = null;
+		ElementoDecorado<Aeropuerto> e1 = null;
+		ElementoDecorado<Aeropuerto> e2 = null;
 		while ((linea = b.readLine()) != null) {
 			cadena = linea.split(",");
 
 			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
 			for (Aeropuerto b1 : list) {
+				/* Elemento decorado Origen*/
 				if (b1.getIATA().equals(ruta.getCodeOrigen())) {
-					e1 = new DecoratedElementTraversal<Aeropuerto>(b1.getID(), b1);
+					e1 = new ElementoDecorado<Aeropuerto>(b1.getID(), b1);
 				}
-				if (b1.getIATA().equals(ruta.getCodeDestino())) {
-					e2 = new DecoratedElementTraversal<Aeropuerto>(b1.getID(), b1);
+				/* Elemento decorado Destino*/
+				if (b1.getIATA().equals(ruta.getCodeDestino())) { 
+					e2 = new ElementoDecorado<Aeropuerto>(b1.getID(), b1);
 
 				}
 			}
+			/* Une los dos vertices si son Origen y destino */
 			if (e1 != null && e2 != null) {
 				gr.insertEdge(e1, e2);
 
 			}
-
-			// System.out.println(rutas.toString());
-
 		}
 		b.close();
 
