@@ -38,7 +38,9 @@ public class Main {
 				// System.out.println("\n Elemento: "+ ++cont);
 				System.out.print(traversal.remove().getElement().toString() + " ");
 		}
-		mostrarGrafo(gr);
+		 mostrarGrafo(gr);
+		
+		GenerarInforme(gr);
 	}
 
 	public static Queue<ElementoDecorado> DFSIter(Graph g, Vertex<ElementoDecorado> s) {
@@ -130,21 +132,73 @@ public class Main {
 	public static void mostrarGrafo(Graph gr) {
 		System.out.println("\nGrafo:");
 		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+		int contadorRutas=0;
+		int contadorAeropuertos=0;
 
 		while (itr.hasNext()) {// Dos While anidados para mostrar cada aeropuerto del grafo y sus adyacentes.
 			Vertex<ElementoDecorado<Aeropuerto>> u = itr.next();
 			Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
 			System.out.print("Conexión: " + u.getElement().getElement().getIATA() + "  -----------> ");
+			contadorAeropuertos++;
 			while (itr1.hasNext()) { // Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
 				Vertex<ElementoDecorado<Aeropuerto>> u2 = itr1.next();
 				if (gr.areAdjacent(u, u2)) {
 
 					System.out.print(u2.getElement().getElement().getIATA() + ", ");
+					contadorRutas++;
 				}
 			}
 			System.out.println();
 		}
 		System.out.println();
+		System.out.println(contadorAeropuertos);
+		System.out.println(contadorRutas);
+	}
+	
+	public static void GenerarInforme(Graph gr) {
+		
+		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+		String masNorte = null;
+		String masOeste = null;
+		String masConexiones = null;
+		double altitudMedia = 0;
+		double aux = 0;
+		double sumaAltitud = 0;
+		double aux2=0;
+		
+		double conexiones=0;
+		
+		while (itr.hasNext()) {		
+			Vertex<ElementoDecorado<Aeropuerto>> a = itr.next();
+			/*/ Aeropuerto mas al norte /*/	
+			if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
+				aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
+				masNorte=a.getElement().getElement().getPais(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+			}
+		  /*/ Altitud media de los paises /*/
+			sumaAltitud=Double.parseDouble(a.getElement().getElement().getAltitud()) + sumaAltitud;
+		
+			/*/ Aeropuerto mas al oeste /*/
+			if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
+				aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
+				masOeste=a.getElement().getElement().getPais(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+			}
+			/*/ Aeropuerto con mas conexiones /*/
+			
+			// FALTA POR HACER
+			
+		}
+		
+		altitudMedia=(sumaAltitud/gr.getN()); // gr.getN me da los vertices que tengo, en este caso los aeropuertos
+		
+		
+		
+		System.out.println("El aeropuerto más al norte es: " + masNorte); 
+		System.out.println("El aeropuerto más al oeste es: " + masOeste);
+		System.out.println("El aeropuerto que mas conexiones tiene es: " + masConexiones);
+		System.out.println("La altitud media de todos los aeropuertos es: " + altitudMedia + " pies");
+	
+		
 	}
 
 	public static String quitarComillas(String token) {
