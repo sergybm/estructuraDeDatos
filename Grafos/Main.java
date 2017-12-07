@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,7 +17,7 @@ import graphsDSESIUCLM.Vertex;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		int cont=0;
+		int cont = 0;
 
 		Graph gr = new TreeMapGraph<>();
 		Queue<ElementoDecorado> traversal;
@@ -36,7 +35,7 @@ public class Main {
 			traversal = DFSIter(gr, startVertex);
 			System.out.println("Nonrecursive DFS traversal with the node " + startVID + " as starting vertex\n");
 			while (!traversal.isEmpty())
-				//System.out.println("\n Elemento: "+ ++cont);
+				// System.out.println("\n Elemento: "+ ++cont);
 				System.out.print(traversal.remove().getElement().toString() + " ");
 		}
 		mostrarGrafo(gr);
@@ -96,50 +95,55 @@ public class Main {
 
 		f = new FileReader(rutas);
 		b = new BufferedReader(f);
-		ElementoDecorado<Aeropuerto> e1 = null;
-		ElementoDecorado<Aeropuerto> e2 = null;
+
 		while ((linea = b.readLine()) != null) {
 			cadena = linea.split(",");
-
 			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
-			for (Aeropuerto b1 : list) {
-				/* Elemento decorado Origen*/
-				if (b1.getIATA().equals(ruta.getCodeOrigen())) {
-					e1 = new ElementoDecorado<Aeropuerto>(b1.getID(), b1);
-				}
-				/* Elemento decorado Destino*/
-				if (b1.getIATA().equals(ruta.getCodeDestino())) { 
-					e2 = new ElementoDecorado<Aeropuerto>(b1.getID(), b1);
 
+			ElementoDecorado<Aeropuerto> e1 = null;
+			ElementoDecorado<Aeropuerto> e2 = null;
+
+		
+			for (Aeropuerto b1 : list) {
+
+				if (b1.getIATA().equals(ruta.getCodeOrigen())) {
+					for (Aeropuerto b2 : list) {
+						if (b2.getIATA().equals(ruta.getCodeDestino())){
+					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	/* Elemento decorado Origen */
+					e2 = new ElementoDecorado<Aeropuerto>(b2.getID(), b2);/* Elemento decorado Destino */
+						}
 				}
 			}
-			/* Une los dos vertices si son Origen y destino */
-			if (e1 != null && e2 != null) {
-				gr.insertEdge(e1, e2);
+			
+			
+				/* Une los dos vertices si son Origen y destino */
+				if (e1 != null && e2 != null) {
+					gr.insertEdge(e1, e2);
 
+				}
 			}
 		}
 		b.close();
 
 	}
-	
-	public static void mostrarGrafo(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr){
+
+	public static void mostrarGrafo(Graph gr) {
 		System.out.println("\nGrafo:");
-		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
-    	
-		while(itr.hasNext()){//Dos While anidados para mostrar cada aeropuerto del grafo  y sus adyacentes.
-			Vertex<ElementoDecorado<Aeropuerto>> u = itr.next(); 
-			Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
-			System.out.print("Conexión: " +u.getElement().getElement().IATA +"  -----------> ");
-				while(itr1.hasNext()){ //Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
-					Vertex<ElementoDecorado<Aeropuerto>> u2 = itr1.next(); 
-					if(gr.areAdjacent(u, u2)){
-						
-						System.out.print(u2.getElement().getElement().IATA+", ");
-					}
+		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+
+		while (itr.hasNext()) {// Dos While anidados para mostrar cada aeropuerto del grafo y sus adyacentes.
+			Vertex<ElementoDecorado<Aeropuerto>> u = itr.next();
+			Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
+			System.out.print("Conexión: " + u.getElement().getElement().getIATA() + "  -----------> ");
+			while (itr1.hasNext()) { // Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
+				Vertex<ElementoDecorado<Aeropuerto>> u2 = itr1.next();
+				if (gr.areAdjacent(u, u2)) {
+
+					System.out.print(u2.getElement().getElement().getIATA() + ", ");
 				}
-				System.out.println();
 			}
+			System.out.println();
+		}
 		System.out.println();
 	}
 
