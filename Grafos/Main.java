@@ -33,10 +33,11 @@ public class Main {
 			System.out.println("The vertex does not exist");
 		} else {
 			traversal = DFSIter(gr, startVertex);
-			System.out.println("Nonrecursive DFS traversal with the node " + startVID + " as starting vertex\n");
+		//	System.out.println("Nonrecursive DFS traversal with the node " + startVID + " as starting vertex\n");
 			while (!traversal.isEmpty())
 				// System.out.println("\n Elemento: "+ ++cont);
-				System.out.print(traversal.remove().getElement().toString() + " ");
+				//System.out.print(
+				traversal.remove().getElement().toString();
 		} 
 		 mostrarGrafo(gr);
 		
@@ -105,7 +106,12 @@ public class Main {
 		while ((linea = b.readLine()) != null) {
 			cadena = linea.split(",");
 			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
-			listrutas.add(ruta);
+			for (i=0;i<list.size();i++) {
+				if ((cadena[2]).equals( list.get(i).getIATA())) {
+					listrutas.add(ruta);
+				}
+			}
+	
 		}
 		b.close();
 		
@@ -113,84 +119,75 @@ public class Main {
 	
 	
 		/// Eliminar las rutas inversas 
-		
+	
 		for(i=0;i<listrutas.size();i++) {
 				iOrigen=listrutas.get(i).getCodeOrigen(); ///iOrigen = iATA aeropuerto de origen
 				iDestino=listrutas.get(i).getCodeDestino(); /// iDestino = iATA aeropuerto de destino
+			//	System.out.println(listrutas.get(i));
 				for (j=0;j<listrutas.size();j++) {			
 					jOrigen=listrutas.get(j).getCodeOrigen(); // jOrigen = iATA aeropuerto de origen
 					jDestino=listrutas.get(j).getCodeDestino(); // jDestino = iATA aeropuerto de destino
+				//	System.out.println(listrutas.get(j));
 						if (iDestino.equals(jOrigen) && iOrigen.equals(jDestino)){
 							listrutas.remove(listrutas.get(j));
 						}
+						
 				}
 			} 
 		
-		
-		
-		
+
 			ElementoDecorado<Aeropuerto> e1 = null;
 			ElementoDecorado<Aeropuerto> e2 = null;
 			
 		
-		for (i=0;i<listrutas.size();i++) {
-					
+		for (i=0;i<listrutas.size();i++) {					
 			for (Aeropuerto b1 : list) {
 				if (b1.getIATA().equals(listrutas.get(i).getCodeOrigen())) {
 					for (Aeropuerto b2 : list) {
 						if (b2.getIATA().equals(listrutas.get(i).getCodeDestino())){
+							
 					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	/* Elemento decorado Origen */
 					e2 = new ElementoDecorado<Aeropuerto>(b2.getID(), b2);/* Elemento decorado Destino */
-					
+							/* Une los dos vertices si son Origen y destino */
+							if (e1 != null && e2 != null) {
+								gr.insertEdge(e1, e2);							
+							}	
 						}
+					}
 				}
 			}
-		}
-				/* Une los dos vertices si son Origen y destino */
-				if (e1 != null && e2 != null) {
-					gr.insertEdge(e1, e2);
-				}	
-			}
-		
-		
+				
+			
 		}
 		
-
 		
+	}
 		
-	
-	
 
 	public static void mostrarGrafo(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr){
-		System.out.println("\nGrafo:");
-		
-		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
 		
 		int contadorAeropuertos=0;
 		int contadorRutas=0;
-    	boolean iguales=false;
+		
+		System.out.println("\n Conexiones del grafo:");
+		
+		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
 		
 		while(itr.hasNext()){//Dos While anidados para mostrar cada aeropuerto del grafo  y sus adyacentes.
-			Vertex<ElementoDecorado<Aeropuerto>> u = itr.next(); 
+			Vertex<ElementoDecorado<Aeropuerto>> a = itr.next(); 
 			Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
-			System.out.print("Conexión: " +u.getElement().getElement().IATA +"  -----------> ");
+			System.out.print("Aeropuerto  " +a.getElement().getElement().IATA +"  -----------> ");
 			contadorAeropuertos++;
 				while(itr1.hasNext()){ //Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
-					Vertex<ElementoDecorado<Aeropuerto>> u2 = itr1.next(); 
-			
-				if(u.equals(u2)) {
-					iguales=true;
-				}
-				else {
-					iguales=false;
-				}
-					if(gr.areAdjacent(u, u2) && iguales==false){						
-						System.out.print(u2.getElement().getElement().IATA+", ");
+					Vertex<ElementoDecorado<Aeropuerto>> a2 = itr1.next(); 
+					if(gr.areAdjacent(a, a2) && a.getElement().getElement().IATA!=a2.getElement().getElement().IATA){						
+						System.out.print(a2.getElement().getElement().IATA+",");
 						contadorRutas++;
 					}
 				}
 				System.out.println();
 			}
+		
 		System.out.println();
 		
 		System.out.println(contadorAeropuertos);
