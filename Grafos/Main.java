@@ -17,7 +17,7 @@ import graphsDSESIUCLM.Vertex;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		int cont = 0;
+		
 
 		Graph gr = new TreeMapGraph<>();
 		Queue<ElementoDecorado> traversal;
@@ -88,7 +88,7 @@ public class Main {
 			if ((cadena[3].equals("\"Spain\"") || cadena[3].equals("\"Italy\"") || cadena[3].equals("\"Germany\"")
 					|| cadena[3].equals("\"France\"")) && quitarComillas(cadena[4]).length() == 3) {
 
-				Aeropuerto ap1 = new Aeropuerto(quitarComillas(cadena[0]), quitarComillas(cadena[3]),
+				Aeropuerto ap1 = new Aeropuerto(quitarComillas(cadena[0]),quitarComillas(cadena[1]) ,quitarComillas(cadena[2]) , quitarComillas(cadena[3]),
 						quitarComillas(cadena[4]), cadena[6], cadena[7], cadena[8]);
 				/* Añadimos los aeropuertos a una lista para luego manejarlos */
 				list.add(ap1);
@@ -135,7 +135,7 @@ public class Main {
 				}
 			} 
 		
-
+	
 			ElementoDecorado<Aeropuerto> e1 = null;
 			ElementoDecorado<Aeropuerto> e2 = null;
 			
@@ -204,6 +204,8 @@ public class Main {
 		double aux = 0;
 		double sumaAltitud = 0;
 		double aux2=0;
+		String masNorteCiudad = null;
+		String masOesteCiudad = null;
 		
 		double conexiones=0;
 		
@@ -212,7 +214,8 @@ public class Main {
 			/*/ Aeropuerto mas al norte /*/	
 			if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
 				aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
-				masNorte=a.getElement().getElement().getPais(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masNorte=a.getElement().getElement().getNombre(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masNorteCiudad=a.getElement().getElement().getCiudad();
 			}
 		  /*/ Altitud media de los paises /*/
 			sumaAltitud=Double.parseDouble(a.getElement().getElement().getAltitud()) + sumaAltitud;
@@ -220,7 +223,8 @@ public class Main {
 			/*/ Aeropuerto mas al oeste /*/
 			if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
 				aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
-				masOeste=a.getElement().getElement().getPais(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masOeste=a.getElement().getElement().getNombre();/// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masOesteCiudad = a.getElement().getElement().getCiudad();
 			}
 			/*/ Aeropuerto con mas conexiones /*/
 			
@@ -235,8 +239,8 @@ public class Main {
 		 */
 		
 		
-		System.out.println("El aeropuerto más al norte es: " + masNorte); 
-		System.out.println("El aeropuerto más al oeste es: " + masOeste);
+		System.out.println("El aeropuerto más al norte es: " + masNorte + "  localizado en " + masNorteCiudad); 
+		System.out.println("El aeropuerto más al oeste es: " + masOeste+ "  localizado en " + masOesteCiudad);
 		System.out.println("El aeropuerto que mas conexiones tiene es: " + masConexiones);
 		System.out.println("La altitud media de todos los aeropuertos es: " + altitudMedia + " pies");
 	
