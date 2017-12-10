@@ -19,14 +19,18 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		
 
-		Graph gr = new TreeMapGraph<>();
+		Graph gr = new TreeMapGraph<>(); // Crea el grafo
 		Queue<ElementoDecorado> traversal;
 
 		Vertex<ElementoDecorado> startVertex;
 		String startVID;
 
-		createGraph(gr);
+		createGraph(gr); // rellena el grafo
+		mostrarGrafo(gr); // muestra el grafo
+		GenerarInforme(gr);
 
+		
+		
 		startVID = "1";
 		startVertex = gr.getVertex(startVID);
 		if (startVertex == null) {
@@ -39,9 +43,7 @@ public class Main {
 				//System.out.print(
 				traversal.remove().getElement().toString();
 		} 
-		 mostrarGrafo(gr);
 		
-		GenerarInforme(gr);
 	}
 
 	public static Queue<ElementoDecorado> DFSIter(Graph g, Vertex<ElementoDecorado> s) {
@@ -79,6 +81,7 @@ public class Main {
 		String rutas = "routes.txt";
 		String linea;
 		String[] cadena;
+		
 	
 
 		FileReader f = new FileReader(aeropuertos);
@@ -88,35 +91,58 @@ public class Main {
 			if ((cadena[3].equals("\"Spain\"") || cadena[3].equals("\"Italy\"") || cadena[3].equals("\"Germany\"")
 					|| cadena[3].equals("\"France\"")) && quitarComillas(cadena[4]).length() == 3) {
 
-				Aeropuerto ap1 = new Aeropuerto(quitarComillas(cadena[0]),quitarComillas(cadena[1]) ,quitarComillas(cadena[2]) , quitarComillas(cadena[3]),
+				Aeropuerto ap1 = new Aeropuerto( (cadena[0]),quitarComillas(cadena[1]),quitarComillas(cadena[2]) , quitarComillas(cadena[3]),
 						quitarComillas(cadena[4]), cadena[6], cadena[7], cadena[8]);
 				/* Añadimos los aeropuertos a una lista para luego manejarlos */
 				list.add(ap1);
 
 			}
 		}
+		
 		b.close();
-
+		
 		f = new FileReader(rutas);
 		b = new BufferedReader(f);
 		List<Ruta> listrutas = new ArrayList<Ruta>();
 		String iOrigen,iDestino,jOrigen,jDestino;
 		int i,j;
+		String iAerolinea,jAerolinea;
 
 		while ((linea = b.readLine()) != null) {
 			cadena = linea.split(",");
 			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
+			
+			// Añade a la lista las rutas que tienen un iATA que coinciden con los de los aeropuertos y por lo tanto con los paises
 			for (i=0;i<list.size();i++) {
 				if ((cadena[2]).equals( list.get(i).getIATA())) {
-					listrutas.add(ruta);
-				}
+					for (j=0;j<list.size();j++) {
+						if ((cadena[4]).equals(list.get(j).getIATA())) {
+							listrutas.add(ruta);
+						}
+					}
+				}	
 			}
-	
 		}
-		b.close();
+	b.close();
 		
 	
+		
 	
+		// Elimino los vuelos dobles, es decir, los que son de varias compañias pero tienen la misma ruta
+		for(i=0;i<listrutas.size();i++) {
+			iAerolinea=listrutas.get(i).getAerolinea();
+	
+			iOrigen=listrutas.get(i).getCodeOrigen(); ///iOrigen = iATA aeropuerto de origen
+			iDestino=listrutas.get(i).getCodeDestino(); /// iDestino = iATA aeropuerto de destino
+			for (j=0;j<listrutas.size();j++) {			
+				jAerolinea=listrutas.get(j).getAerolinea();
+				jOrigen=listrutas.get(j).getCodeOrigen(); // jOrigen = iATA aeropuerto de origen
+				jDestino=listrutas.get(j).getCodeDestino(); // jDestino = iATA aeropuerto de destino
+				if (iOrigen.equals(jOrigen) && iDestino.equals(jDestino) && !iAerolinea.equals(jAerolinea)){					
+					listrutas.remove(listrutas.get(j));					
+				}
+			}
+		}
 	
 		/// Eliminar las rutas inversas 
 	
@@ -134,53 +160,58 @@ public class Main {
 						
 				}
 			} 
-		
 	
-			ElementoDecorado<Aeropuerto> e1 = null;
-			ElementoDecorado<Aeropuerto> e2 = null;
-			
+	
 		
-		for (i=0;i<listrutas.size();i++) {					
+		// Creamos el grafo
+		ElementoDecorado<Aeropuerto> e1 = null;
+		ElementoDecorado<Aeropuerto> e2 = null;	
+
+		for (i=0;i<listrutas.size();i++) {						
 			for (Aeropuerto b1 : list) {
 				if (b1.getIATA().equals(listrutas.get(i).getCodeOrigen())) {
+					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	// Elemento decorado Origen 
+				
 					for (Aeropuerto b2 : list) {
-						if (b2.getIATA().equals(listrutas.get(i).getCodeDestino())){
-							
-					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	/* Elemento decorado Origen */
-					e2 = new ElementoDecorado<Aeropuerto>(b2.getID(), b2);/* Elemento decorado Destino */
-							/* Une los dos vertices si son Origen y destino */
+						if (b2.getIATA().equals(listrutas.get(i).getCodeDestino())){					
+							e2 = new ElementoDecorado<Aeropuerto>(b2.getIATA(), b2); // Elemento decorado Destino 
+						
+							// Une los dos vertices si son Origen y destino 
 							if (e1 != null && e2 != null) {
-								gr.insertEdge(e1, e2);							
+								gr.insertEdge(e1, e2);
 							}	
 						}
 					}
 				}
 			}
-				
-			
-		}
-		
-		
+		}  
 	}
 		
 
-	public static void mostrarGrafo(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr){
+	public static void mostrarGrafo(Graph gr){
 		
 		int contadorAeropuertos=0;
 		int contadorRutas=0;
 		
+		
+		System.out.println("\n El grafo tiene: " + gr.getN() + " Vertices");
+		System.out.println("\n El grafo tiene: " + gr.getM() + " Aristas");
+		
 		System.out.println("\n Conexiones del grafo:");
 		
+	
 		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
 		
 		while(itr.hasNext()){//Dos While anidados para mostrar cada aeropuerto del grafo  y sus adyacentes.
 			Vertex<ElementoDecorado<Aeropuerto>> a = itr.next(); 
+			
 			Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
-			System.out.print("Aeropuerto  " +a.getElement().getElement().IATA +"  -----------> ");
+			
+			System.out.print("Aeropuerto  " +a.getElement().getElement().getIATA() +"  -----------> ");
 			contadorAeropuertos++;
 				while(itr1.hasNext()){ //Por cada aeropuerto recorremos los vértices e imprimimos los adyacentes.
 					Vertex<ElementoDecorado<Aeropuerto>> a2 = itr1.next(); 
-					if(gr.areAdjacent(a, a2) && a.getElement().getElement().IATA!=a2.getElement().getElement().IATA){						
+					if(gr.areAdjacent(a,a2) && a.getElement().getElement().getIATA()!=a2.getElement().getElement().getIATA()){						
 						System.out.print(a2.getElement().getElement().IATA+",");
 						contadorRutas++;
 					}
@@ -214,7 +245,7 @@ public class Main {
 			/*/ Aeropuerto mas al norte /*/	
 			if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
 				aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
-				masNorte=a.getElement().getElement().getNombre(); /// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masNorte=a.getElement().getElement().getNombre();
 				masNorteCiudad=a.getElement().getElement().getCiudad();
 			}
 		  /*/ Altitud media de los paises /*/
@@ -223,7 +254,7 @@ public class Main {
 			/*/ Aeropuerto mas al oeste /*/
 			if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
 				aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
-				masOeste=a.getElement().getElement().getNombre();/// Deberíamos poner el nombre del aeropuerto pero no lo hemos cogido de los datos
+				masOeste=a.getElement().getElement().getNombre();
 				masOesteCiudad = a.getElement().getElement().getCiudad();
 			}
 			/*/ Aeropuerto con mas conexiones /*/

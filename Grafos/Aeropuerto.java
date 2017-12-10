@@ -77,9 +77,12 @@ public class Aeropuerto {
 	public void setAltitud(String altitud) {
 		this.altitud = altitud;
 	}
+
+
 	@Override
 	public String toString() {
-		return "AirportID: "+this.ID+"\nCountry: "+this.pais+"\nIATA: "+this.IATA
-				+"\nLatitud: "+this.latitud+"\nLongitud: "+this.longitud+"\nAltitud: "+this.altitud+"\n";
+		return "Aeropuerto [ID=" + ID + ", ciudad=" + ciudad + ", nombre=" + nombre + ", pais=" + pais + ", IATA="
+				+ IATA + ", latitud=" + latitud + ", longitud=" + longitud + ", altitud=" + altitud + "]";
 	}
+
 }
