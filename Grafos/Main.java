@@ -229,7 +229,7 @@ public class Main {
 		System.out.println(contadorRutas);
 	}
 	/*/
-	
+
 	 public static void mostrarGrafo(Graph gr){
 		    Vertex [] v;
 		    Iterator<Edge> ite = gr.getEdges();
@@ -237,9 +237,10 @@ public class Main {
 		    while (ite.hasNext()) {
 		      v = gr.endVertices(ite.next());
 		      System.out.print(v[0].getElement().toString());
-		      System.out.print("--->" + v[1].getElement().toString() + "//");
+		      System.out.print("--->" + v[1].getElement().toString());
 		      System.out.println();
 		    }
+		    
 		  }
 	
 	public static void GenerarInforme(Graph gr) {
@@ -247,54 +248,92 @@ public class Main {
 		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
 		String masNorte = null;
 		String masOeste = null;
-		String masConexiones = null;
+		Aeropuerto masConexiones = null;
 		double altitudMedia = 0;
 		double aux = 0;
 		double sumaAltitud = 0;
 		double aux2=0;
 		String masNorteCiudad = null;
 		String masOesteCiudad = null;
+		Iterator aux3;
+		Vertex<ElementoDecorado<Aeropuerto>> a;
 		
-		double conexiones=0;
+		int conexiones=0;
 		
 		while (itr.hasNext()) {		
-			Vertex<ElementoDecorado<Aeropuerto>> a = itr.next();
+			a = itr.next();
 			
 			/*/ Aeropuerto mas al norte /*/	
-			if (Integer.parseInt(a.getElement().getElement().getAltitud())<90) {
-				if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
+			if (Double.parseDouble(a.getElement().getElement().getLatitud())<=90) {
+				if(aux == 0) {
+					aux = Double.parseDouble(a.getElement().getElement().getLatitud());
+				}else if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
 					aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
 					masNorte=a.getElement().getElement().getNombre();
 					masNorteCiudad=a.getElement().getElement().getCiudad();
 				}
 			}
+		}
 		  /*/ Altitud media de los paises /*/
-			sumaAltitud=Double.parseDouble(a.getElement().getElement().getAltitud()) + sumaAltitud;
-		
-			/*/ Aeropuerto mas al oeste /*/
-			
-				if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
-					aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
-					masOeste=a.getElement().getElement().getNombre();
-					masOesteCiudad = a.getElement().getElement().getCiudad();
-				}
-			
-			/*/ Aeropuerto con mas conexiones /*/
-			
-			// FALTA POR HACER
-			
+		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itrM = gr.getVertices();
+		Vertex<ElementoDecorado<Aeropuerto>> m;
+		while (itrM.hasNext()) {		
+			m = itrM.next();
+			sumaAltitud=Double.parseDouble(m.getElement().getElement().getAltitud()) + sumaAltitud;
 		}
 		
 		altitudMedia=(sumaAltitud/gr.getN()); // gr.getN me da los vertices que tengo, en este caso los aeropuertos
 		
-		/*/ NOTAS
-		 * La altitud media creo que está mal y faltan las conexiones
-		 */
+			/*/ Aeropuerto mas al oeste /*/
+			Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
+			Vertex<ElementoDecorado<Aeropuerto>> a2;
+			while (itr1.hasNext()) {		
+				a2 = itr1.next();
+				if (Double.parseDouble(a2.getElement().getElement().getLongitud())<=180) {
+					if(aux2 == 0) {
+						aux2 = Double.parseDouble(a2.getElement().getElement().getLongitud());
+					}else if (Double.parseDouble(a2.getElement().getElement().getLongitud()) < aux2) {
+					aux=(Double.parseDouble(a2.getElement().getElement().getLongitud()));
+					masOeste=a2.getElement().getElement().getNombre();
+					masOesteCiudad = a2.getElement().getElement().getCiudad();
+					}
+				}
+			}
+			
+			/*/ Aeropuerto con mas conexiones /*/
+			Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr2 = gr.getVertices();
+			Vertex<ElementoDecorado<Aeropuerto>> a3, mayor = null;
+			int conexiones2 = 0;//Auxi
+			while (itr2.hasNext()) {		
+					a3 = itr2.next();
+					aux3=gr.incidentEdges(a3);
+						while (aux3.hasNext()) {
+							aux3.next();
+							conexiones++;
+						}
+						if(conexiones2 ==0) {
+							conexiones2 = conexiones;
+							mayor = a3;
+						}else if(conexiones>conexiones2) {
+							conexiones2 = conexiones;
+							mayor = a3;
+						}
+						
+						conexiones = 0;
+						
+						
+			}
+		
+		
+		
+		
+		
+	
 		
 		
 		System.out.println("El aeropuerto más al norte es: " + masNorte + "  localizado en " + masNorteCiudad); 
 		System.out.println("El aeropuerto más al oeste es: " + masOeste+ "  localizado en " + masOesteCiudad);
-		System.out.println("El aeropuerto que mas conexiones tiene es: " + masConexiones);
+		System.out.println("El aeropuerto que mas conexiones tiene es: "  + mayor.getElement().getElement().getNombre() + " conexiones:"+conexiones2);
 		System.out.println("La altitud media de todos los aeropuertos es: " + altitudMedia + " pies");
 	
 		

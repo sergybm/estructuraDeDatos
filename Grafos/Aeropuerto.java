@@ -81,8 +81,7 @@ public class Aeropuerto {
 
 	@Override
 	public String toString() {
-		return "IATA="
-				+ IATA + "";
+		return IATA;
 	}
 
 }
