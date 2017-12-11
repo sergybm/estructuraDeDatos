@@ -81,8 +81,8 @@ public class Aeropuerto {
 
 	@Override
 	public String toString() {
-		return "Aeropuerto [ID=" + ID + ", ciudad=" + ciudad + ", nombre=" + nombre + ", pais=" + pais + ", IATA="
-				+ IATA + ", latitud=" + latitud + ", longitud=" + longitud + ", altitud=" + altitud + "]";
+		return "IATA="
+				+ IATA + "";
 	}
 
 }

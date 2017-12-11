@@ -27,6 +27,7 @@ public class Main {
 
 		createGraph(gr); // rellena el grafo
 		mostrarGrafo(gr); // muestra el grafo
+	//	printGraph(gr);
 		GenerarInforme(gr);
 
 		
@@ -161,21 +162,21 @@ public class Main {
 				}
 			} 
 	
-	
-		
+
 		// Creamos el grafo
 		ElementoDecorado<Aeropuerto> e1 = null;
 		ElementoDecorado<Aeropuerto> e2 = null;	
-
-		for (i=0;i<listrutas.size();i++) {						
-			for (Aeropuerto b1 : list) {
+		int o,p;
+		Aeropuerto b1,b2;
+		for (i=0;i<listrutas.size();i++) {					
+			for (o=0;o<list.size();o++) {
+				b1=list.get(o);
 				if (b1.getIATA().equals(listrutas.get(i).getCodeOrigen())) {
-					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	// Elemento decorado Origen 
-				
-					for (Aeropuerto b2 : list) {
+					e1 = new ElementoDecorado<Aeropuerto>(b1.getIATA(), b1);	// Elemento decorado Origen 		
+					for (p=0;p<list.size();p++) {
+						b2=list.get(p);
 						if (b2.getIATA().equals(listrutas.get(i).getCodeDestino())){					
-							e2 = new ElementoDecorado<Aeropuerto>(b2.getIATA(), b2); // Elemento decorado Destino 
-						
+							e2 = new ElementoDecorado<Aeropuerto>(b2.getIATA(), b2); // Elemento decorado Destino 					
 							// Une los dos vertices si son Origen y destino 
 							if (e1 != null && e2 != null) {
 								gr.insertEdge(e1, e2);
@@ -185,9 +186,12 @@ public class Main {
 				}
 			}
 		}  
-	}
 		
-
+	
+	
+	} // FIN 
+		
+/*/
 	public static void mostrarGrafo(Graph gr){
 		
 		int contadorAeropuertos=0;
@@ -224,6 +228,19 @@ public class Main {
 		System.out.println(contadorAeropuertos);
 		System.out.println(contadorRutas);
 	}
+	/*/
+	
+	 public static void mostrarGrafo(Graph gr){
+		    Vertex [] v;
+		    Iterator<Edge> ite = gr.getEdges();
+		    System.out.println("Conexiones del grafo");
+		    while (ite.hasNext()) {
+		      v = gr.endVertices(ite.next());
+		      System.out.print(v[0].getElement().toString());
+		      System.out.print("--->" + v[1].getElement().toString() + "//");
+		      System.out.println();
+		    }
+		  }
 	
 	public static void GenerarInforme(Graph gr) {
 		
@@ -242,21 +259,26 @@ public class Main {
 		
 		while (itr.hasNext()) {		
 			Vertex<ElementoDecorado<Aeropuerto>> a = itr.next();
+			
 			/*/ Aeropuerto mas al norte /*/	
-			if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
-				aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
-				masNorte=a.getElement().getElement().getNombre();
-				masNorteCiudad=a.getElement().getElement().getCiudad();
+			if (Integer.parseInt(a.getElement().getElement().getAltitud())<90) {
+				if (Double.parseDouble(a.getElement().getElement().getLatitud()) > aux) {
+					aux=(Double.parseDouble(a.getElement().getElement().getLatitud()));
+					masNorte=a.getElement().getElement().getNombre();
+					masNorteCiudad=a.getElement().getElement().getCiudad();
+				}
 			}
 		  /*/ Altitud media de los paises /*/
 			sumaAltitud=Double.parseDouble(a.getElement().getElement().getAltitud()) + sumaAltitud;
 		
 			/*/ Aeropuerto mas al oeste /*/
-			if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
-				aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
-				masOeste=a.getElement().getElement().getNombre();
-				masOesteCiudad = a.getElement().getElement().getCiudad();
-			}
+			
+				if (Double.parseDouble(a.getElement().getElement().getLongitud()) < aux2) {
+					aux=(Double.parseDouble(a.getElement().getElement().getLongitud()));
+					masOeste=a.getElement().getElement().getNombre();
+					masOesteCiudad = a.getElement().getElement().getCiudad();
+				}
+			
 			/*/ Aeropuerto con mas conexiones /*/
 			
 			// FALTA POR HACER

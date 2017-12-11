@@ -1,70 +1,85 @@
-import graphsDSESIUCLM.Element;
-/*********************************************************************
+/***************************************
+******************************
 *
-* Class Name: DecoratedElement
-* Author/s name: Daniel Romero, Pablo Mora & Beka Bekeri
-* Release/Creation date: 18/12/2016
-* Class description: This is the class to create decorated elements.
-* We can obtain if an element is visited or not.
-* We can compare two elements.
-*
+* Class Name: DecoratedElementEstacion
+* Author/s name: Alfredo Martinez Martinez 
+* Release/Creation date:9-12-2016
+* Class version:
+* Class description: elemento decorado que contiene el elemento 'estacion' y es usado
+* para introducir vertices en grafo y para recorrerlo con BFS a traves 
+* del boolean visited y de parent. Tiene diversos gets y sets para obtener y modificar sus datos,
+* un metodo equals para comparar vertices y sobrescribe metodo toString para imprimir por pantalla.
 **********************************************************************
 */
-public class ElementoDecorado<T> implements Element {
 
-  private String ID;                 //Vertex ID
-  private T element;                // Data Element
-  private boolean visited;         //Attribute to label the node as visited
-  /*********************************************************************
-   * Method name: DecoratedElement
-   *
-   * Description of the Method: This is the constructor of the class.
-   * Arguments: String key, T element
-   *********************************************************************/
-  public ElementoDecorado (String key, T element) {
+//importacion de paquetes usados
+import graphsDSESIUCLM.*;
+
+// Sentencias para crear y llamar al elemento decorado.
+
+public class ElementoDecorado<T> implements Element {
+  private String ID;                 //Id del vertice
+  private T element;                // Datos del elemento
+  private boolean visited;         // Si esta visitado o no
+  private ElementoDecorado<T> parent; // Vertice desde el cual se accede al nodo actual                                              // the current node is accessed
+  private int distance;    // Distancia en vertices del nodo original
+    
+  public ElementoDecorado (String ID, T element) {
+    this.ID=ID;   
     this.element = element;
-    ID = key;
     visited = false;
+    parent = null;
+    distance=0; 
   }
-  /*********************************************************************
-   * Method name: getters and setters
-   *
-   * Description of the Method: These are the getters and setters to obtain the element.
-   * Arguments: element, boolean visited and ID for the stations
-   *********************************************************************/
+  
+//Diversos gets y sets 
+
   public T getElement() {
     return element;
   }
+  
+  public String getID() {
+    return ID;
+  }
+  
   public boolean getVisited() {
     return visited;
   }
+  
   public void setVisited(boolean t) {
     visited = t;
   }
   
-  /* In this case, to check if two Vertices are identical, both the key and the
-   * element must be equal.
-  */
-  /*********************************************************************
-   * Method name: equals
-   *
-   * Description of the Method: This is the method that compare the elements..
-   * Arguments: Object n
-   *********************************************************************/
+  public void setID(String ID) {
+    this.ID = ID;
+}
+  
+  public ElementoDecorado<T> getParent() {
+    return parent;
+  }
+  public void setParent(ElementoDecorado<T> u) {
+    parent = u;
+  }
+  public int getDistance() {
+    return distance;
+  }
+  public void setDistance(int d) {
+    distance = d;
+  }
+    
+  /* metodo para comparar 2 objetos, seran iguales si el numero es el mismo.
+   * se realiza un cast para convertirn (class Object) a clase
+   */
+  @Override
   public boolean equals (Object n) {
    return (ID.equals(((ElementoDecorado) n).getID())
         && element.equals(((ElementoDecorado<T>) n).getElement()));
   }
-  /*********************************************************************
-   * Method name: toString
-   *
-   * Description of the Method: This is the method that prints the information of the element.
-   *********************************************************************/
+   //Cambio en el toString para esta clase.
+  @Override
   public String toString() {
     return element.toString();   
   }
-  public String getID() {
-    return ID;
-  }
-}
+  
+}  
 
