@@ -79,7 +79,6 @@ public class CentroMando {
 		// tienen la misma ruta
 		for (i = 0; i < listRutas.size(); i++) {
 			iAerolinea = listRutas.get(i).getAerolinea();
-
 			iOrigen = listRutas.get(i).getCodeOrigen(); /// iOrigen = iATA aeropuerto de origen
 			iDestino = listRutas.get(i).getCodeDestino(); /// iDestino = iATA aeropuerto de destino
 			for (j = 0; j < listRutas.size(); j++) {
@@ -185,6 +184,17 @@ public class CentroMando {
 		}
 	}
 
+	public void verAeropuertos(Graph gr) {
+		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+		Vertex<ElementoDecorado<Aeropuerto>> a;
+		while (itr.hasNext()) {
+			a = itr.next();
+			System.out.println(a.getElement().getElement().toString());
+
+		}
+
+	}
+
 	public void GenerarInforme(Graph gr) {
 
 		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
@@ -277,70 +287,4 @@ public class CentroMando {
 		return token.substring(1, token.length() - 1);
 	}
 
-	public int computeDiameter(Graph g) {
-		Vertex<ElementoDecorado> v, u;
-		int d = 0, n = 0, aux;
-		int nVertices;
-		Iterator<Vertex<ElementoDecorado>> it1;
-		nVertices = g.getN();
-		it1 = g.getVertices();
-		Vertex[] vertices = new Vertex[nVertices];
-		for (int i = 0; i < nVertices; i++) {
-			vertices[i] = it1.next();
-		}
-		for (int i = 0; i < nVertices; i++) {
-			for (int j = i + 1; j < nVertices; j++) {
-				aux = SPBFS(g, vertices[i], vertices[j]);
-
-				/*
-				 * System.out.println("Nodes v, u: " + vertices[i].getElement() + " " +
-				 * vertices[j].getElement() + " " + "Path length: " + aux);
-				 */
-				if (aux > d)
-					d = aux;
-			}
-		}
-		return d;
-	}
-
-	private static int SPBFS(Graph g, Vertex<ElementoDecorado> s, Vertex<ElementoDecorado> t) {
-		Queue<Vertex<ElementoDecorado>> q = new LinkedList();
-		boolean noEnd = true;
-		Vertex<ElementoDecorado> u, v;
-		ElementoDecorado el;
-		Edge e;
-		Iterator<Edge> it;
-		int l;
-
-		Iterator<Vertex<ElementoDecorado>> itAux = g.getVertices();
-		while (itAux.hasNext()) {
-			el = itAux.next().getElement();
-			el.setVisited(false);
-			el.setDistance(0);
-		}
-
-		s.getElement().setVisited(true);
-		q.offer(s);
-		while (!q.isEmpty() && noEnd) {
-			u = q.poll();
-			it = g.incidentEdges(u);
-			while (it.hasNext() && noEnd) {
-				e = it.next();
-				v = g.opposite(u, e);
-				if (!(v.getElement()).getVisited()) {
-					(v.getElement()).setVisited(true);
-					(v.getElement()).setDistance(((u.getElement()).getDistance()) + 1);
-					q.offer(v);
-					noEnd = !(v.getElement().equals(t.getElement()));
-				}
-			}
-		}
-
-		if (!noEnd)
-			l = t.getElement().getDistance();
-		else
-			l = -1;
-
-		return l;
-	}
 }
