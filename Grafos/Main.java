@@ -37,7 +37,7 @@ public class Main {
 					pc.mostrarGrafo(gr);
 					break;
 				case '2':
-					
+					pc.verAeropuertos(gr);
 					break;
 				case '3':
 					pc.GenerarInforme(gr);
@@ -46,11 +46,14 @@ public class Main {
 					break;
 				case '5':
 					condicion = false;
+					break;
 				default:
 					System.out.println("Seleccione una opcion valida.");
 				}
 			}
+			
 		} while (condicion);
+		System.out.println("Saliendo...");
 	}
 
 }
