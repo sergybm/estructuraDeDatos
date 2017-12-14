@@ -1,10 +1,12 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import graphsDSESIUCLM.Graph;
 import graphsDSESIUCLM.TreeMapGraph;
+import graphsDSESIUCLM.Vertex;
 
 public class Main {
 
@@ -20,13 +22,14 @@ public class Main {
 		
 		
 		System.out.println("\n BIENVENIDO AL OPERADOR DE VUELOS \n");
-		
+		Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr= new TreeMapGraph<>();
+		ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices=new ArrayList<Vertex<ElementoDecorado<Aeropuerto>>>();
 		CentroMando pc= new CentroMando();
-		List <Aeropuerto> a=pc.leerAeropuertos();
+		List <Aeropuerto> a=pc.leerAeropuertos(gr);
 		List <Ruta> r=pc.leerRutas(a);
 		
-		Graph gr = new TreeMapGraph<>();
-		pc.createGraph(gr, a, r);
+		
+		pc.createGraph(gr, a, r,vertices);
 		do {
 			System.out.println(
 					"\n Seleccione una opcion : \n 1- Ver rutas.\n 2- Ver aeropuertos.\n 3- Generar informe.\n 4- Jugar.\n 5- Salir");
@@ -43,7 +46,7 @@ public class Main {
 					pc.GenerarInforme(gr);
 					break;
 				case '4':
-					pc.seeWay(gr,a);
+					pc.seeWay(gr,vertices);
 					break;
 				case '5':
 					condicion = false;

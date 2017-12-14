@@ -18,7 +18,7 @@ public class CentroMando {
 	private List<Aeropuerto> listAeropuertos = new ArrayList<Aeropuerto>();
 	private List<Ruta> listRutas = new ArrayList<Ruta>();
 
-	public List<Aeropuerto> leerAeropuertos() throws IOException {
+	public List<Aeropuerto> leerAeropuertos(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>>  gr) throws IOException {
 		String linea;
 		String[] cadena;
 		FileReader f = new FileReader(aeropuertos);
@@ -28,13 +28,17 @@ public class CentroMando {
 			cadena = linea.split(",");
 			if ((cadena[3].equals("\"Spain\"") || cadena[3].equals("\"Italy\"") || cadena[3].equals("\"Germany\"")
 					|| cadena[3].equals("\"France\"")) && quitarComillas(cadena[4]).length() == 3) {
-
+				
 				Aeropuerto ap1 = new Aeropuerto((cadena[0]), quitarComillas(cadena[1]), quitarComillas(cadena[2]),
 						quitarComillas(cadena[3]), quitarComillas(cadena[4]), cadena[6], cadena[7], cadena[8]);
 
 				listAeropuertos.add(ap1);
+				
+				
+	    		
 			}
-
+			
+		
 		}
 		b.close();
 		return listAeropuertos;
@@ -62,6 +66,9 @@ public class CentroMando {
 					}
 				}
 			}
+			
+			
+			
 		}
 
 		b.close();
@@ -110,7 +117,7 @@ public class CentroMando {
 		return listRutas;
 	}
 
-	public void createGraph(Graph <ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr, List<Aeropuerto> listAeropuertos, List<Ruta> listRutas) throws IOException {
+	public void createGraph(Graph <ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr, List<Aeropuerto> listAeropuertos, List<Ruta> listRutas,ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices) throws IOException {
 		// Creamos el grafo
 		int i, o, p;
 		ElementoDecorado<Aeropuerto> e1 = null;
@@ -133,9 +140,16 @@ public class CentroMando {
 						}
 					}
 				}
+			
+		    	
+	    	
 			}
+			
 		}
-
+		Iterator <Vertex<ElementoDecorado<Aeropuerto>>> itr = gr.getVertices();
+		while(itr.hasNext()){
+			vertices.add(itr.next());    			
+			}
 	} // FIN
 
 	/*
@@ -317,71 +331,68 @@ public class CentroMando {
          }
  }
 	
-	public void seeWay(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>>  gr,List<Aeropuerto> a){
+	public void seeWay(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>>  gr,ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices){
 		boolean flag=false;
 		Vertex<ElementoDecorado<Aeropuerto>> primero = null;  						 // Vertice cuyo elemento contiene al primer preso de la busqueda
 		Vertex<ElementoDecorado<Aeropuerto>> ultimo = null;  						 // Vertice cuyo elemento contiene al segundo preso de la busqueda
         Queue <Vertex<ElementoDecorado<Aeropuerto>>> traversal = new LinkedList();   // Cola que usaremos en el DFS  					 
         Vertex<ElementoDecorado<Aeropuerto>> e;
 		Vertex<ElementoDecorado<Aeropuerto>> aux; // Vértice cual parametro visitado de su elemento correspondiente iremos viendo
-		String conti="y";										 // Nos indica si se quiere seguir con el bucle o no, en caso de ser == "y" se sigue, en caso contrario no.
-        
-        
-       
-        	
-        	for (int i=1;i<gr.getN();i++) {
-	        	 aux=gr.getVertex(a.get(i).getIATA());
-	        	 aux.getElement().setVisited(false);
-	        }
-        	
-		do{
-			System.out.println("El primer avión que coge es en :");
-			String v1 = a.get(0).getIATA(); /// Hay que coger el aeropuerto de inicio del ladrón.
-			for(int i=0;i<gr.getN();i++){
-				aux=gr.getVertex(a.get(i).getIATA());
-				if(aux.getElement().getElement().getIATA().contentEquals(v1)){
-					flag=true;
-					primero=gr.getVertex(v1);
-				}
-			}
-			if(flag == false){
-				System.out.printf("\"El aeropuerto %s no existe.\n",v1);
-			}
-		}while(flag!=true);
-		flag=false;
-		do{
-			System.out.println("El aeropuerto de destino final es: ");
-			String v2 = a.get(20).getIATA(); /// Hay que coger el aeropuerto destino final del ladrón.
-			for(int i=0;i<gr.getN();i++){
-				aux=gr.getVertex(a.get(i).getIATA());
-				if(aux.getElement().getElement().getIATA().contentEquals(v2)){
-					flag=true;
-					ultimo=gr.getVertex(v2);
-				}
-			}
-			if(flag == false){
-				System.out.printf("El aeropuerto %s no existe.\n",v2);
-			}
-		}while(flag!=true);
-		flag=false;
 		
+		
+		for (int i = 1; i < gr.getN(); i++) {
+			aux = gr.getVertex(vertices.get(i).getID());
+			aux.getElement().setVisited(false);
+		}
+
+		do {
+		//	System.out.println("Put the first station:");
+			String v1=vertices.get(2).getID();
+			for (int i = 0; i < gr.getN(); i++) {
+				aux = gr.getVertex(vertices.get(i).getID());
+				if (aux.getElement().getID().contentEquals(v1)) {
+					flag = true;
+					primero = gr.getVertex(v1);
+				}
+			}
+			if (flag == false) {
+				System.out.printf("La estación no existe.\n", v1);
+			}
+		} while (flag != true);
+		flag = false;
+		do {
+	//		System.out.println("Put the second station:");
+			String v2=vertices.get(15).getID();
+			for (int i = 0; i < gr.getN(); i++) {
+				aux = gr.getVertex(vertices.get(i).getID());
+				if (aux.getElement().getID().contentEquals(v2)) {
+					flag = true;
+					ultimo = gr.getVertex(v2);
+				}
+			}
+			if (flag == false) {
+				System.out.printf("La estación no existe \n", v2);
+			}
+		} while (flag != true);
+		flag = false;
+
 		traversal.clear();
-        BFSRecur(gr, primero, ultimo,traversal);
-		
-        String mensaje;
-        if (ultimo.getElement().getVisited()){
-            mensaje="El camino es: \n";
-            for (int i = 0; i<traversal.size();i++){
-            	e=traversal.poll();
-            	mensaje+=e.getID()+" ";
-            }
-            
-            mensaje+=ultimo.getID();
-            
-        } else {
-            mensaje="No existe camino posible";
-        }
-       System.out.println(mensaje);
+		BFSRecur(gr, primero, ultimo, traversal);
+
+		String mensaje;
+		if (ultimo.getElement().getVisited()) {
+			mensaje = "La ruta más corta entre " + primero.getElement().getElement().getIATA() + " y " + ultimo.getElement().getElement().getIATA() + "es: \n";
+			for (int i = 0; i < traversal.size(); i++) {
+				e = traversal.poll();
+				mensaje += e.getID() + " ==>  ";
+			}
+
+			mensaje += ultimo.getID();
+
+		} else {
+			mensaje = "No existe ruta posible.";
+		}
+		System.out.println(mensaje);
         
 	
 
