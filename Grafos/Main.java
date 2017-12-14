@@ -43,6 +43,7 @@ public class Main {
 					pc.GenerarInforme(gr);
 					break;
 				case '4':
+					pc.seeWay(gr,a);
 					break;
 				case '5':
 					condicion = false;
