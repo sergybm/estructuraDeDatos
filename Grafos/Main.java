@@ -27,6 +27,8 @@ public class Main {
 		CentroMando pc= new CentroMando();
 		List <Aeropuerto> a=pc.leerAeropuertos(gr);
 		List <Ruta> r=pc.leerRutas(a);
+		Scanner read = new Scanner(System.in);
+		String inicio,fin;
 		
 		
 		pc.createGraph(gr, a, r,vertices);
@@ -46,7 +48,12 @@ public class Main {
 					pc.GenerarInforme(gr);
 					break;
 				case '4':
-					pc.seeWay(gr,vertices);
+					System.out.println("Introduce el aeropuerto de origen (iATA): ");
+					inicio=read.nextLine();
+					System.out.println("Introduce el aeropuerto de destino (iATA): ");
+					fin=read.nextLine();
+					pc.CaminoAleatorio(gr, vertices,inicio,fin);
+					pc.CaminoMinimo(gr,vertices,inicio,fin);
 					break;
 				case '5':
 					condicion = false;

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
+import java.util.Scanner;
 
 import graphsDSESIUCLM.Edge;
 import graphsDSESIUCLM.Graph;
@@ -331,8 +331,117 @@ public class CentroMando {
          }
  }
 	
-	public void seeWay(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>>  gr,ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices){
-		boolean flag=false;
+	/*********************************************************************
+	 * Method name: DFSRec
+	 *
+	 * Description of the Method: 
+	 *
+	 * Calling arguments: Graph gr, vertex v, vertex ultimo, queue traversal
+	 *********************************************************************/
+	public static void DFSRecur(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr, Vertex<ElementoDecorado<Aeropuerto>> v, Vertex<ElementoDecorado<Aeropuerto>> ultimo,Queue<Vertex<ElementoDecorado<Aeropuerto>>> traversal) {
+		
+		Vertex<ElementoDecorado<Aeropuerto>> u = null; // Elemento decorado del siguiente vertice al que miramos sU parametro visitado
+		Edge<ElementoDecorado<Ruta>> e; // Arista que se mira en cada iteración
+		Iterator<Edge<ElementoDecorado<Ruta>>> it; // iterator para iterar las aristas incidentes de v
+		Vertex<ElementoDecorado<Aeropuerto>> aux = null;
+
+	    v.getElement().setVisited(true);
+	    traversal.offer(v);
+	    it = gr.incidentEdges(v);
+	    while (it.hasNext()) {
+	        e = it.next();
+	        u = gr.opposite(v, e);
+	        if (!u.getElement().getVisited()) {
+	          DFSRecur(gr,u, u, traversal);
+	        }
+	    }
+	}
+
+	/*********************************************************************
+	    * Method name: CaminoAleatorio
+	    *
+	    * Description of the Method:
+	    *
+	    * Calling arguments: Graph gr, ArrayList vertices
+	    *********************************************************************/
+
+	public void CaminoAleatorio(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr, ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices,String inicio,String fin) {
+		boolean flag = false;
+		Vertex<ElementoDecorado<Aeropuerto>> primero = null; 
+		Vertex<ElementoDecorado<Aeropuerto>> ultimo = null; 
+															
+		Queue<Vertex<ElementoDecorado<Aeropuerto>>> traversal = new LinkedList();
+		Vertex<ElementoDecorado<Aeropuerto>> e;
+		
+		Vertex<ElementoDecorado<Aeropuerto>> aux;
+
+			for (int i = 1; i < gr.getN(); i++) {
+				aux = gr.getVertex(vertices.get(i).getID());
+				aux.getElement().setVisited(false);
+			}
+			do {
+				
+				String v1 = inicio;
+				for (int i = 0; i < gr.getN(); i++) {
+					aux = gr.getVertex(vertices.get(i).getID());
+					if (aux.getElement().getID().contentEquals(v1)) {
+						flag = true;
+						primero = gr.getVertex(v1);
+					}
+				}
+				if (flag == false) {
+					System.out.printf("El aeropuerto no existe\n", v1);
+				}
+			} while (flag != true);
+			flag = false;
+			
+			do {
+				String v2 = fin;
+				for (int i = 0; i < gr.getN(); i++) {
+					aux = gr.getVertex(vertices.get(i).getID());
+					if (aux.getElement().getID().contentEquals(v2)) {
+						flag = true;
+						ultimo = gr.getVertex(v2);
+					}
+				}
+				if (flag == false) {
+					System.out.printf("El aeropuerto no existe\n", v2);
+				}
+			} while (flag != true);
+			flag = false;
+
+			traversal.clear();
+			DFSRecur(gr, primero, ultimo, traversal);
+			
+			String mensaje;
+			
+			if (ultimo.getElement().getVisited()) {
+				mensaje = "El camino es: : \n";
+				for (int i = 0; i < traversal.size(); i++) {
+					e = traversal.poll();
+					mensaje += e.getID() + " ==> ";
+				}
+
+				mensaje += ultimo.getID();
+
+			} else {
+				mensaje = "No existe camino";
+			}
+			System.out.println(mensaje);
+
+		}
+	
+	/*********************************************************************
+	    * Method name: CaminoMinimo
+	    *
+	    * Description of the Method: 
+	    *
+	    * Calling arguments: Graph gr, ArrayList vertices
+	    *********************************************************************/
+
+	
+	public void CaminoMinimo(Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>>  gr,ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices,String v1,String v2){
+	
 		Vertex<ElementoDecorado<Aeropuerto>> primero = null;  						 // Vertice cuyo elemento contiene al primer preso de la busqueda
 		Vertex<ElementoDecorado<Aeropuerto>> ultimo = null;  						 // Vertice cuyo elemento contiene al segundo preso de la busqueda
         Queue <Vertex<ElementoDecorado<Aeropuerto>>> traversal = new LinkedList();   // Cola que usaremos en el DFS  					 
@@ -345,43 +454,31 @@ public class CentroMando {
 			aux.getElement().setVisited(false);
 		}
 
-		do {
-		//	System.out.println("Put the first station:");
-			String v1=vertices.get(2).getID();
+			String ve1=v1;
 			for (int i = 0; i < gr.getN(); i++) {
 				aux = gr.getVertex(vertices.get(i).getID());
-				if (aux.getElement().getID().contentEquals(v1)) {
-					flag = true;
-					primero = gr.getVertex(v1);
+				if (aux.getElement().getID().contentEquals(ve1)) {
+	
+					primero = gr.getVertex(ve1);
 				}
 			}
-			if (flag == false) {
-				System.out.printf("La estación no existe.\n", v1);
-			}
-		} while (flag != true);
-		flag = false;
-		do {
-	//		System.out.println("Put the second station:");
-			String v2=vertices.get(15).getID();
-			for (int i = 0; i < gr.getN(); i++) {
-				aux = gr.getVertex(vertices.get(i).getID());
-				if (aux.getElement().getID().contentEquals(v2)) {
-					flag = true;
-					ultimo = gr.getVertex(v2);
-				}
-			}
-			if (flag == false) {
-				System.out.printf("La estación no existe \n", v2);
-			}
-		} while (flag != true);
-		flag = false;
+	
 
+	//		System.out.println("Put the second station:");
+			String ve2=v2;
+			for (int i = 0; i < gr.getN(); i++) {
+				aux = gr.getVertex(vertices.get(i).getID());
+				if (aux.getElement().getID().contentEquals(ve2)) {
+					ultimo = gr.getVertex(ve2);
+				}
+			}
+		
 		traversal.clear();
-		BFSRecur(gr, primero, ultimo, traversal);
+		BFSRecur(gr, primero, ultimo, traversal); // Como los pesos de los aristas son 1, basta con utilizar BFS para encontrar el camino más corto.
 
 		String mensaje;
 		if (ultimo.getElement().getVisited()) {
-			mensaje = "La ruta más corta entre " + primero.getElement().getElement().getIATA() + " y " + ultimo.getElement().getElement().getIATA() + "es: \n";
+			mensaje = "La ruta más corta entre " + primero.getElement().getElement().getIATA() + " y " + ultimo.getElement().getElement().getIATA() + " es:  \n";
 			for (int i = 0; i < traversal.size(); i++) {
 				e = traversal.poll();
 				mensaje += e.getID() + " ==>  ";
