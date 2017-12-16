@@ -1,27 +1,29 @@
 public class Aeropuerto {
-	String ID;	/* ID aeropuerto */
+	String ID; /* ID aeropuerto */
 	String ciudad;
 	String nombre;
-	String pais; 
+	String pais;
 	String IATA; /* Nomenglatura aeropuerto */
 	String latitud;
 	String longitud;
 	String altitud;
-	public Aeropuerto(String iD,String nombre,String ciudad, String pais, String IATA, String latitud, String longitud, String altitud) {
+
+	public Aeropuerto(String iD, String nombre, String ciudad, String pais, String IATA, String latitud,
+			String longitud, String altitud) {
 		this.ID = iD;
-		this.nombre=nombre;
-		this.ciudad=ciudad;
+		this.nombre = nombre;
+		this.ciudad = ciudad;
 		this.pais = pais;
 		this.IATA = IATA;
 		this.latitud = latitud;
 		this.longitud = longitud;
 		this.altitud = altitud;
 	}
-	/* 
-	 * ID=1, nombre=2, ciudad=3; pais=4; IATA=5; ICAO=6, latitud=7 ; longitud=8; altitud=9;
-	 * El numero de variables del fichero tiene 15 datos pero solo nos quedamos con esos.	
+	/*
+	 * ID=1, nombre=2, ciudad=3; pais=4; IATA=5; ICAO=6, latitud=7 ; longitud=8;
+	 * altitud=9; El numero de variables del fichero tiene 15 datos pero solo nos
+	 * quedamos con esos.
 	 */
-	
 
 	public String getID() {
 		return ID;
@@ -30,14 +32,15 @@ public class Aeropuerto {
 	public void setID(String iD) {
 		ID = iD;
 	}
+
 	public String getCiudad() {
 		return ciudad;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
-	
+
 	public String getPais() {
 		return pais;
 	}
@@ -78,10 +81,9 @@ public class Aeropuerto {
 		this.altitud = altitud;
 	}
 
-
 	@Override
 	public String toString() {
-		return IATA;
+		return "IATA= " + IATA ;
 	}
 
 }
