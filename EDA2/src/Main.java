@@ -2,11 +2,11 @@
  ******************************
  *
  * Class Name: Aeropuerto 
- * Author/s name: Lucía Alfonso García
- *  Sergio Barrios Martínez 
+ * Author/s name: LucÃ­a Alfonso GarcÃ­a
+ *  Sergio Barrios MartÃ­nez 
  *  Raul Ruiz del Valle Arevalo
  * 
- * Class description:  Clase main donde se muestra el menú del programa
+ * Class description:  Clase main donde se muestra el menÃº del programa
  **********************************************************************
  */
 
@@ -21,7 +21,7 @@ import graphsDSESIUCLM.Graph;
 import graphsDSESIUCLM.TreeMapGraph;
 import graphsDSESIUCLM.Vertex;
 
-public class Main1 {
+public class Main {
 
 	private static Scanner capturar;
 	public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -37,13 +37,13 @@ public class Main1 {
 		System.out.println("\n BIENVENIDO AL OPERADOR DE VUELOS \n");
 		Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr= new TreeMapGraph<>();
 		ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices=new ArrayList<Vertex<ElementoDecorado<Aeropuerto>>>();
-		CentroMandoSergio pc= new CentroMandoSergio();
+		CentroMando pc= new CentroMando();
 		List <Aeropuerto> a=pc.leerAeropuertos(gr);
 		List <Ruta> r=pc.leerRutas(a);
 		
 		
 		pc.createGraph(gr, a, r,vertices);
-		//Bucle que muestra el menú del programa
+		//Bucle que muestra el menÃº del programa
 		do {
 			System.out.println(
 					"\n Seleccione una opcion : \n 1- Ver rutas.\n 2- Ver aeropuertos.\n 3- Generar informe.\n 4- Espias.\n 5- Salir");
