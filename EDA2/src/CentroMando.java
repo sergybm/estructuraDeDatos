@@ -3,11 +3,11 @@
  ******************************
  *
  * Class Name: Aeropuerto 
- * Author/s name: LucÃ­a Alfonso GarcÃ­a 
- * 				  Sergio Barrios MartÃ­nez 
+ * Author/s name: Lucía Alfonso García 
+ * 				  Sergio Barrios Martínez 
  * 				  Raul Ruiz del Valle Arevalo
  * 
- * Class description: Es la clase donde se encuentran la mayorÃ­a de los mÃ©todos, 
+ * Class description: Es la clase donde se encuentran la mayoría de los métodos, 
  * documentados cada uno de ellos.
  **********************************************************************
  */
@@ -26,7 +26,7 @@ import graphsDSESIUCLM.Edge;
 import graphsDSESIUCLM.Graph;
 import graphsDSESIUCLM.Vertex;
 
-public class CentroMando{
+public class CentroMando {
 	final static String aeropuertos = "airports.txt";
 	final static String rutas = "routes.txt";
 	private List<Aeropuerto> listAeropuertos = new ArrayList<Aeropuerto>();
@@ -38,7 +38,7 @@ public class CentroMando{
 	 *
 	 * Description of the Method: este metodo lee todos los datos de los aeropuertos
 	 * y se queda con los aeropuertos que nos interesan, es decir, con los que
-	 * pertenecen a EspaÃ±a, Italia, Alemania y Francia.
+	 * pertenecen a España, Italia, Alemania y Francia.
 	 *
 	 * Calling arguments: Graph gr
 	 * 
@@ -79,7 +79,7 @@ public class CentroMando{
 	 *
 	 * Method name: leerRutas
 	 *
-	 * Description of the Method: Se ejecuta mientras haya mÃ¡s lineas de en el
+	 * Description of the Method: Se ejecuta mientras haya más lineas de en el
 	 * documento, llama al constructor y comprueba si los dos aeropuertos implicados
 	 * son de los que nos interesan, en caso afirmativo, se guarda dicha ruta.
 	 *
@@ -103,7 +103,7 @@ public class CentroMando{
 			cadena = linea.split(",");
 			Ruta ruta = new Ruta((cadena[0]), (cadena[1]), (cadena[2]), (cadena[3]), (cadena[4]), (cadena[5]));
 
-			// AÃ±ade a la lista las rutas que tienen un iATA que coinciden con los de los
+			// Añade a la lista las rutas que tienen un iATA que coinciden con los de los
 			// aeropuertos y por lo tanto con los paises
 			for (i = 0; i < listAeropuertos.size(); i++) {
 				if ((cadena[2]).equals(listAeropuertos.get(i).getIATA())) {
@@ -127,7 +127,7 @@ public class CentroMando{
 	 *
 	 * Method name: vuDobleRutaInversa
 	 *
-	 * Description of the Method: Este mÃ©todo elimina las rutas repetidas, ya sean
+	 * Description of the Method: Este método elimina las rutas repetidas, ya sean
 	 * en el mismo sentido o en sentido contrario
 	 *
 	 * Calling arguments: List listRutas.
@@ -141,7 +141,7 @@ public class CentroMando{
 		String iOrigen, iDestino, jOrigen, jDestino;
 		String iAerolinea, jAerolinea;
 
-		// Elimino los vuelos dobles, es decir, los que son de varias compaÃ±ias pero
+		// Elimino los vuelos dobles, es decir, los que son de varias compañias pero
 		// tienen la misma ruta
 		for (i = 0; i < listRutas.size(); i++) {
 			iAerolinea = listRutas.get(i).getAerolinea();
@@ -180,7 +180,7 @@ public class CentroMando{
 	 *
 	 * Description of the Method: En el caso de que el IATA origen y destino de la
 	 * ruta coincidan con el de los aeropuertos que nos interesan, lo introduce en
-	 * un elemento decorado e inserta la arista, creando asÃ­ el grafo.
+	 * un elemento decorado e inserta la arista, creando así el grafo.
 	 *
 	 * Calling arguments: Graph gr, List listAeropuertos, List listRutas, ArrayList
 	 * vertices.
@@ -286,9 +286,9 @@ public class CentroMando{
 	 *
 	 * Method name: GenerarInforme
 	 *
-	 * Description of the Method: nos indica cuÃ¡les son los aeropuertos que nos pide
-	 * la prÃ¡ctica, es decir, los que estÃ¡n mÃ¡s al norte, mÃ¡s al oeste, el mÃ¡s alto
-	 * y el que mÃ¡s conexiones tiene.
+	 * Description of the Method: nos indica cuáles son los aeropuertos que nos pide
+	 * la práctica, es decir, los que están más al norte, más al oeste, el más alto
+	 * y el que más conexiones tiene.
 	 *
 	 * Calling arguments: Graph gr.
 	 *
@@ -333,7 +333,7 @@ public class CentroMando{
 			m = itrM.next();
 			sumaAltitud = Double.parseDouble(m.getElement().getElement().getAltitud()) + sumaAltitud;
 		}
-		altitudMedia = (sumaAltitud / gr.getN()); // gr.getN me da los vÃ©rtices que tengo, en este caso los aeropuertos
+		altitudMedia = (sumaAltitud / gr.getN()); // gr.getN me da los vértices que tengo, en este caso los aeropuertos
 
 		/* / Aeropuerto mas al oeste / */
 		Iterator<Vertex<ElementoDecorado<Aeropuerto>>> itr1 = gr.getVertices();
@@ -374,8 +374,8 @@ public class CentroMando{
 
 		}
 
-		System.out.println("El aeropuerto mÃ¡s al norte es: " + masNorte + "  localizado en " + masNorteCiudad);
-		System.out.println("El aeropuerto mÃ¡s al oeste es: " + masOeste + "  localizado en " + masOesteCiudad);
+		System.out.println("El aeropuerto más al norte es: " + masNorte + "  localizado en " + masNorteCiudad);
+		System.out.println("El aeropuerto más al oeste es: " + masOeste + "  localizado en " + masOesteCiudad);
 		System.out.println("El aeropuerto que mas conexiones tiene es: " + mayor.getElement().getElement().getNombre()
 				+ " con " + conexiones2 + " conexiones");
 		System.out.println("La altitud media de todos los aeropuertos es: " + altitudMedia + " pies");
@@ -398,7 +398,7 @@ public class CentroMando{
 			Queue<Vertex<ElementoDecorado<Aeropuerto>>> traversal) {
 		Vertex<ElementoDecorado<Aeropuerto>> u = null; // Elemento decorado del siguiente vertice al que miramos su
 														// parametro visitado
-		Edge<ElementoDecorado<Ruta>> e; // Arista que se mira en cada iteraciÃ³n
+		Edge<ElementoDecorado<Ruta>> e; // Arista que se mira en cada iteración
 		Iterator<Edge<ElementoDecorado<Ruta>>> it; // iterator para iterar las aristas incidentes de v
 		Vertex<ElementoDecorado<Aeropuerto>> aux = null;
 
@@ -438,16 +438,16 @@ public class CentroMando{
 	public Vertex<ElementoDecorado<Aeropuerto>> pedirIATA(
 			Graph<ElementoDecorado<Aeropuerto>, ElementoDecorado<Ruta>> gr,
 			ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices) {
-		// DeclaraciÃ³n de las variables que vamos a usar
+		// Declaración de las variables que vamos a usar
 		boolean aerCorrecto = false; // Utilizado para comprobar si el nombre introducido es correcto
 		Vertex<ElementoDecorado<Aeropuerto>> ap = null; // Almacena el aeropuerto que has introducido por teclado
-		Vertex<ElementoDecorado<Aeropuerto>> aux; // VÃ©rtice auxiliar
+		Vertex<ElementoDecorado<Aeropuerto>> aux; // Vértice auxiliar
 		Scanner teclado = new Scanner(System.in);
 
 		do {
 
-			String v1 = teclado.nextLine().toUpperCase(); // Almacena el IATA introducido (da igual si en mayÃºsculas que
-															// en minÃºsuclas)
+			String v1 = teclado.nextLine().toUpperCase(); // Almacena el IATA introducido (da igual si en mayúsculas que
+															// en minúsuclas)
 			// Comprueba si el IATA es correcto
 			for (int j = 0; j < gr.getN(); j++) {
 				if (vertices.get(j).getID().equals(v1)) {
@@ -462,7 +462,7 @@ public class CentroMando{
 					}
 				}
 				if (aerCorrecto == false) {
-					System.out.printf("La estaciÃ³n no existe.\n", v1);
+					System.out.printf("La estación no existe.\n", v1);
 				}
 			}
 		} while (aerCorrecto != true);
@@ -473,7 +473,7 @@ public class CentroMando{
 	 *
 	 * Method name: espiaLento
 	 *
-	 * Description of the Method: Muestra la ruta que efectua el espÃ­a que es
+	 * Description of the Method: Muestra la ruta que efectua el espía que es
 	 * espiado.
 	 *
 	 * Calling arguments: Graph gr, ArrayList vertices.
@@ -485,16 +485,16 @@ public class CentroMando{
 			ArrayList<Vertex<ElementoDecorado<Aeropuerto>>> vertices) {
 
 		Scanner teclado = new Scanner(System.in);
-		Vertex<ElementoDecorado<Aeropuerto>> primero = null; // VÃ©rtice que contiene el primer vÃ©rtice de la bÃºsqueda
-		Vertex<ElementoDecorado<Aeropuerto>> ultimo = null; // VÃ©rtice que contiene el Ãºltimo vÃ©rtice de la bÃºsqueda
+		Vertex<ElementoDecorado<Aeropuerto>> primero = null; // Vértice que contiene el primer vértice de la búsqueda
+		Vertex<ElementoDecorado<Aeropuerto>> ultimo = null; // Vértice que contiene el último vértice de la búsqueda
 		System.out.println("Introduzca el IATA origen: ");
-		primero = pedirIATA(gr, vertices); // VÃ©rtice con el aeropuerto de origen
+		primero = pedirIATA(gr, vertices); // Vértice con el aeropuerto de origen
 		System.out.println("Introduzca el IATA destino: ");
-		ultimo = pedirIATA(gr, vertices); // VÃ©rtice con el aeropuerto de destino
-		boolean noPath;// Usado para comprobar si hay algÃºn camino disponible
+		ultimo = pedirIATA(gr, vertices); // Vértice con el aeropuerto de destino
+		boolean noPath;// Usado para comprobar si hay algún camino disponible
 		Stack<Edge> p1 = new Stack(), p2 = new Stack();
 		Vertex[] v; // Vector para recorrer los elementos de la pila
-		noPath = pathDFS(gr, primero, ultimo, p1); // Llamada al mÃ©todo
+		noPath = pathDFS(gr, primero, ultimo, p1); // Llamada al método
 
 		if (!noPath) {// Si hay un camino disponible, se cambia de una pila a la otra
 			while (!p1.isEmpty()) {
@@ -531,7 +531,7 @@ public class CentroMando{
 			System.out.println("\n No hay ningun camino posible entre esos dos nodos. ");
 		}
 
-		espiaRapido(gr, vertices, primero, ultimo); // Llama al mÃ©todo
+		espiaRapido(gr, vertices, primero, ultimo); // Llama al método
 
 	}
 
@@ -552,7 +552,7 @@ public class CentroMando{
 		boolean noEnd = !primero.equals(ultimo);
 		Edge e;
 		Iterator<Edge<ElementoDecorado<Ruta>>> it; // Iterator para iterar las aristas incidentes de v
-		Vertex<ElementoDecorado<Aeropuerto>> aux = null; // VÃ©rtice auxiliar
+		Vertex<ElementoDecorado<Aeropuerto>> aux = null; // Vértice auxiliar
 		primero.getElement().setVisited(true);
 		it = g.incidentEdges(primero);
 		while (it.hasNext() && noEnd) {
@@ -572,7 +572,7 @@ public class CentroMando{
 	 *
 	 * Method name: espiaRapido
 	 *
-	 * Description of the Method: Busca la ruta mÃ¡s corta entre el aeropuerto origen
+	 * Description of the Method: Busca la ruta más corta entre el aeropuerto origen
 	 * y destino Calling arguments: Graph gr, ArrayList vertices, Vertex primero,
 	 * Vertex ultimo.
 	 *
@@ -594,10 +594,10 @@ public class CentroMando{
 			aux.getElement().setVisited(false);
 		}
 		traversal.clear();
-		BFSRecur(gr, primero, ultimo, traversal); // Llamada al mÃ©todo
+		BFSRecur(gr, primero, ultimo, traversal); // Llamada al método
 		String mensaje;
 		if (ultimo.getElement().getVisited()) { // Muestra un mensaje cuando visitas llegas a tu destino
-			mensaje = "\n La ruta mÃ¡s corta entre " + primero.getElement().getElement().getIATA() + " y "
+			mensaje = "\n La ruta más corta entre " + primero.getElement().getElement().getIATA() + " y "
 					+ ultimo.getElement().getElement().getIATA() + " es: \n";
 			for (int i = 0; i < traversal.size(); i++) {
 				e = traversal.poll();

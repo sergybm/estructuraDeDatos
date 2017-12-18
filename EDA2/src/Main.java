@@ -2,11 +2,11 @@
  ******************************
  *
  * Class Name: Aeropuerto 
- * Author/s name: LucÃ­a Alfonso GarcÃ­a
- *  Sergio Barrios MartÃ­nez 
+ * Author/s name: Lucía Alfonso García
+ *  Sergio Barrios Martínez 
  *  Raul Ruiz del Valle Arevalo
  * 
- * Class description:  Clase main donde se muestra el menÃº del programa
+ * Class description:  Clase main donde se muestra el menú del programa
  **********************************************************************
  */
 
@@ -43,7 +43,7 @@ public class Main {
 		
 		
 		pc.createGraph(gr, a, r,vertices);
-		//Bucle que muestra el menÃº del programa
+		//Bucle que muestra el menú del programa
 		do {
 			System.out.println(
 					"\n Seleccione una opcion : \n 1- Ver rutas.\n 2- Ver aeropuertos.\n 3- Generar informe.\n 4- Espias.\n 5- Salir");
